@@ -1,122 +1,116 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+import Header from './components/Header'
+import ProjectForm from './components/ProjectForm'
+import ProjectList from './components/ProjectList'
+
+import {
+    getProjects,
+    createProject,
+    updateProject,
+    deleteProject
+} from './services/projectService'
+
 function App() {
-  const [count, setCount] = useState(0)
+    const [projects, setProjects] = useState([])
+    const [editingId, setEditingId] = useState(null)
+    const [showForm, setShowForm] = useState(false)
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    const [form, setForm] = useState({
+        title: '',
+        description: '',
+        type: 'project',
+        status: 'active'
+    })
 
-      <div className="ticks"></div>
+    useEffect(() => {
+        loadProjects()
+    }, [])
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    function loadProjects() {
+        getProjects()
+            .then(data => setProjects(data.data))
+    }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    function handleChange(e) {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    function resetForm() {
+        setForm({
+            title: '',
+            description: '',
+            type: 'project',
+            status: 'active'
+        })
+
+        setEditingId(null)
+        setShowForm(false)
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+
+        const request = editingId
+            ? updateProject(editingId, form)
+            : createProject(form)
+
+        request.then(() => {
+            loadProjects()
+            resetForm()
+        })
+    }
+
+    function handleEdit(project) {
+        setEditingId(project.id)
+        setShowForm(true)
+
+        setForm({
+            title: project.title,
+            description: project.description,
+            type: project.type,
+            status: project.status
+        })
+    }
+
+    function handleDelete(id) {
+        deleteProject(id)
+            .then(() => loadProjects())
+    }
+
+    return (
+        <div className="page">
+            <Header />
+
+            <button className="add-button" onClick={() => setShowForm(true)}>
+                Add New Project
+            </button>
+
+            {showForm && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <ProjectForm
+                            form={form}
+                            editingId={editingId}
+                            onChange={handleChange}
+                            onSubmit={handleSubmit}
+                            onCancel={resetForm}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <ProjectList
+                projects={projects}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
+        </div>
+    )
 }
 
 export default App
