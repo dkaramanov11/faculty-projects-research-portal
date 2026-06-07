@@ -1,4 +1,4 @@
-function ProjectForm({ form, editingId, onChange, onSubmit, onCancel }) {
+function ProjectForm({ form, editingId, categories, onChange, onSubmit, onCancel }) {
     return (
         <section className="form-card">
             <h2>{editingId ? 'Edit Project' : 'Add New Project'}</h2>
@@ -19,6 +19,19 @@ function ProjectForm({ form, editingId, onChange, onSubmit, onCancel }) {
                     onChange={onChange}
                     required
                 />
+                <select
+                    name="category_id"
+                    value={form.category_id}
+                    onChange={onChange}
+                >
+                    <option value="">Select category</option>
+
+                    {categories.map(category => (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                    ))}
+                </select>
 
                 <div className="form-row">
                     <select name="type" value={form.type} onChange={onChange}>
@@ -38,11 +51,13 @@ function ProjectForm({ form, editingId, onChange, onSubmit, onCancel }) {
                         {editingId ? 'Update Project' : 'Create Project'}
                     </button>
 
-                    {editingId && (
-                        <button type="button" className="secondary" onClick={onCancel}>
-                            Cancel
-                        </button>
-                    )}
+                    <button
+                        type="button"
+                        className="secondary"
+                        onClick={onCancel}
+                    >
+                        Cancel
+                    </button>
                 </div>
             </form>
         </section>

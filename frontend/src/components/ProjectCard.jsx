@@ -11,6 +11,10 @@ function ProjectCard({ project, onEdit, onDelete }) {
             <h3>{project.title}</h3>
             <p>{project.description}</p>
 
+            <p className="category-text">
+                Category: {project.category ? project.category.name : 'No category'}
+            </p>
+
             <div className="card-actions">
                 <button onClick={() => onEdit(project)}>Edit</button>
                 <button className="danger" onClick={() => onDelete(project.id)}>
