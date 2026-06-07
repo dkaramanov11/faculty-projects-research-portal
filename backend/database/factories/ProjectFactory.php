@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -32,6 +33,8 @@ class ProjectFactory extends Factory
                 'completed',
                 'draft'
             ]),
+
+            'category_id' => Category::query()->inRandomOrder()->value('id'),
         ];
     }
 }
