@@ -5,6 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+use App\Enums\ProjectStatus;
+use App\Enums\ProjectType;
+use Illuminate\Validation\Rules\Enum;
+
 class ProjectRequest extends FormRequest
 {
     /**
@@ -25,8 +29,8 @@ class ProjectRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'type' => ['required', 'in:project,research'],
-            'status' => ['required', 'in:active,completed,draft'],
+            'type' => ['required', new Enum(ProjectType::class)],
+            'status' => ['required', new Enum(ProjectStatus::class)],
             'category_id' => ['nullable', 'exists:categories,id'],
         ];
     }
