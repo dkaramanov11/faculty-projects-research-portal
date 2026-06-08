@@ -1,6 +1,13 @@
 import ProjectCard from './ProjectCard'
 
-function ProjectList({ projects, onEdit, onDelete }) {
+function ProjectList({
+                         projects,
+                         users,
+                         onEdit,
+                         onDelete,
+                         onAddParticipant,
+                         onRemoveParticipant
+                     }) {
     return (
         <section>
             <h2>Projects</h2>
@@ -10,8 +17,11 @@ function ProjectList({ projects, onEdit, onDelete }) {
                     <ProjectCard
                         key={project.id}
                         project={project}
+                        users={users}
                         onEdit={onEdit}
                         onDelete={onDelete}
+                        onAddParticipant={onAddParticipant}
+                        onRemoveParticipant={onRemoveParticipant}
                     />
                 ))}
             </div>

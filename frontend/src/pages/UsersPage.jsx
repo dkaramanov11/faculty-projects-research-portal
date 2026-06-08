@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getUsers } from '../services/userService'
+import { Link } from 'react-router-dom'
 
 function UsersPage() {
     const [users, setUsers] = useState([])
@@ -19,7 +20,7 @@ function UsersPage() {
 
             <div className="user-list">
                 {users.map(user => (
-                    <div className="user-row" key={user.id}>
+                    <Link to={`/users/${user.id}`} className="user-row user-row-link" key={user.id}>
                         <div>
                             <strong>{user.full_name}</strong>
                             <p>@{user.username} · {user.email}</p>
@@ -27,8 +28,8 @@ function UsersPage() {
 
                         <span className={`role-badge ${user.role}`}>
                             {user.role}
-                        </span>
-                    </div>
+                         </span>
+                    </Link>
                 ))}
             </div>
         </section>

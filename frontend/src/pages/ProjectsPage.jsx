@@ -8,14 +8,18 @@ import {
     getProjects,
     createProject,
     updateProject,
-    deleteProject
+    deleteProject,
+    addParticipant,
+    removeParticipant
 } from '../services/projectService'
 
 import { getCategories } from '../services/categoryService'
+import { getUsers } from '../services/userService'
 
 function ProjectsPage() {
     const [projects, setProjects] = useState([])
     const [categories, setCategories] = useState([])
+    const [users, setUsers] = useState([])
     const [editingId, setEditingId] = useState(null)
     const [showForm, setShowForm] = useState(false)
 
@@ -30,6 +34,7 @@ function ProjectsPage() {
     useEffect(() => {
         loadProjects()
         loadCategories()
+        loadUsers()
     }, [])
 
     function loadProjects() {
@@ -90,6 +95,22 @@ function ProjectsPage() {
         deleteProject(id).then(() => loadProjects())
     }
 
+    function handleAddParticipant(projectId, userId) {
+        addParticipant(projectId, userId)
+            .then(() => loadProjects())
+    }
+
+    function handleRemoveParticipant(projectId, userId) {
+        removeParticipant(projectId, userId)
+            .then(() => loadProjects())
+    }
+
+
+    function loadUsers() {
+        getUsers()
+            .then(data => setUsers(data.data))
+    }
+
     return (
         <>
             <button className="add-button" onClick={() => setShowForm(true)}>
@@ -113,8 +134,11 @@ function ProjectsPage() {
 
             <ProjectList
                 projects={projects}
+                users={users}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onAddParticipant={handleAddParticipant}
+                onRemoveParticipant={handleRemoveParticipant}
             />
         </>
     )

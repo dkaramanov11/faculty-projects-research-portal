@@ -12,4 +12,8 @@ class UserController extends Controller
     {
         return UserResource::collection(User::all());
     }
+    public function show(User $user): UserResource
+    {
+        return UserResource::make($user);
+    }
 }

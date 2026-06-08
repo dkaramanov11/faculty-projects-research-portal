@@ -5,6 +5,8 @@ import Navbar from './components/Navbar'
 import ProjectsPage from './pages/ProjectsPage'
 import CategoriesPage from './pages/CategoriesPage'
 import UsersPage from './pages/UsersPage'
+import ProjectDetailsPage from './pages/ProjectDetailsPage'
+import UserDetailsPage from './pages/UserDetailsPage'
 
 function App() {
     return (
@@ -17,6 +19,8 @@ function App() {
                     <Route path="/projects" element={<ProjectsPage />} />
                     <Route path="/categories" element={<CategoriesPage />} />
                     <Route path="/users" element={<UsersPage />} />
+                    <Route path="/projects/:id" element={<ProjectDetailsPage />} />
+                    <Route path="/users/:id" element={<UserDetailsPage />} />
                 </Routes>
             </div>
         </BrowserRouter>

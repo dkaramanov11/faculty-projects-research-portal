@@ -39,3 +39,21 @@ export function deleteProject(id) {
         }
     })
 }
+
+export function addParticipant(projectId, userId) {
+    return fetch(`${API_URL}/${projectId}/participants/${userId}`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
+export function removeParticipant(projectId, userId) {
+    return fetch(`${API_URL}/${projectId}/participants/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => response.json())
+}

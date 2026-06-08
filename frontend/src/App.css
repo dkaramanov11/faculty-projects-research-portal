@@ -330,3 +330,80 @@ button.danger {
     background: #dcfce7;
     color: #166534;
 }
+.participants-section {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.participants-section h4 {
+    margin: 0 0 10px;
+}
+
+.participants-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.participants-list li {
+    background: #f9fafb;
+    padding: 8px 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.participant-form {
+    display: flex;
+    gap: 8px;
+}
+
+.participant-form select {
+    flex: 1;
+}
+
+.empty-text {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.small-danger {
+    background: #dc2626;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.participants-count {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.details-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.details-card {
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+.user-row-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-row-link:hover {
+    background: #eef2ff;
+}

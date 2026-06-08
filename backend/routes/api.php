@@ -17,3 +17,4 @@ Route::get('/users', [UserController::class, 'index']);
 
 Route::post('/projects/{project}/participants/{user}', [ProjectController::class, 'addParticipant']);
 Route::delete('/projects/{project}/participants/{user}', [ProjectController::class, 'removeParticipant']);
+Route::get('/users/{user}', [UserController::class, 'show']);
