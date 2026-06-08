@@ -1,0 +1,39 @@
+### Register
+POST http://127.0.0.1:8000/api/register
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Alek",
+    "surname": "Karam",
+    "username": "alek",
+    "email": "alek@test.com",
+    "password": "123456",
+    "role": "student"
+}
+
+###
+
+### Login
+POST http://127.0.0.1:8000/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "alek",
+    "password": "123456"
+}
+
+###
+
+### Me
+GET http://127.0.0.1:8000/api/me
+Accept: application/json
+Authorization: Bearer 4|61yupAJbQzowQx2aeSN7lYrEXCS0HOXnkvJQQXux1fa2d201
+
+###
+
+### Logout
+POST http://127.0.0.1:8000/api/logout
+Accept: application/json
+Authorization: Bearer 4|61yupAJbQzowQx2aeSN7lYrEXCS0HOXnkvJQQXux1fa2d201
