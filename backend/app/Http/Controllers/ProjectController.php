@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -74,6 +75,22 @@ class ProjectController extends Controller
 
         return response()->json([
             'message' => 'Project deleted successfully.'
+        ]);
+    }
+
+    public function addParticipant(Project $project, User $user): ProjectResource
+    {
+        $project->participants()->syncWithoutDetaching([$user->id]);
+
+        return ProjectResource::make($project->load('participants'));
+    }
+
+    public function removeParticipant(Project $project, User $user): JsonResponse
+    {
+        $project->participants()->detach($user->id);
+
+        return response()->json([
+            'message' => 'Participant removed successfully.'
         ]);
     }
 }

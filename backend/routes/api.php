@@ -12,4 +12,8 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('projects', ProjectController::class);
 Route::apiResource('categories', CategoryController::class);
+
 Route::get('/users', [UserController::class, 'index']);
+
+Route::post('/projects/{project}/participants/{user}', [ProjectController::class, 'addParticipant']);
+Route::delete('/projects/{project}/participants/{user}', [ProjectController::class, 'removeParticipant']);
