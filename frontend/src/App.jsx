@@ -7,6 +7,9 @@ import CategoriesPage from './pages/CategoriesPage'
 import UsersPage from './pages/UsersPage'
 import ProjectDetailsPage from './pages/ProjectDetailsPage'
 import UserDetailsPage from './pages/UserDetailsPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import MyProfilePage from './pages/MyProfilePage'
 
 function App() {
     return (
@@ -21,6 +24,9 @@ function App() {
                     <Route path="/users" element={<UsersPage />} />
                     <Route path="/projects/:id" element={<ProjectDetailsPage />} />
                     <Route path="/users/:id" element={<UserDetailsPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/profile" element={<MyProfilePage />} />
                 </Routes>
             </div>
         </BrowserRouter>

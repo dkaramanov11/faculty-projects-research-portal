@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Header from '../components/Navbar'
 import ProjectForm from '../components/ProjectForm'
 import ProjectList from '../components/ProjectList'
+import { useAuth } from '../context/AuthContext'
 
 import {
     getProjects,
@@ -22,6 +23,7 @@ function ProjectsPage() {
     const [users, setUsers] = useState([])
     const [editingId, setEditingId] = useState(null)
     const [showForm, setShowForm] = useState(false)
+    const { user } = useAuth()
 
     const [form, setForm] = useState({
         title: '',
@@ -113,9 +115,11 @@ function ProjectsPage() {
 
     return (
         <>
-            <button className="add-button" onClick={() => setShowForm(true)}>
-                Add New Project
-            </button>
+            {user && (
+                <button className="add-button" onClick={() => setShowForm(true)}>
+                    Add New Project
+                </button>
+            )}
 
             {showForm && (
                 <div className="modal-overlay">

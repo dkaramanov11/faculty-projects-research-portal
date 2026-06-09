@@ -27,7 +27,7 @@ function UsersPage() {
                         </div>
 
                         <span className={`role-badge ${user.role}`}>
-                            {user.role}
+                             {user.role}
                          </span>
                     </Link>
                 ))}

@@ -6,6 +6,7 @@ import {
     updateCategory,
     deleteCategory
 } from '../services/categoryService'
+import { useAuth } from '../context/AuthContext'
 
 function CategoriesPage() {
     const [categories, setCategories] = useState([])
@@ -14,6 +15,7 @@ function CategoriesPage() {
     const [form, setForm] = useState({
         name: ''
     })
+    const { user } = useAuth()
 
     useEffect(() => {
         loadCategories()
@@ -75,9 +77,11 @@ function CategoriesPage() {
                     <p>Manage project and research categories.</p>
                 </div>
 
-                <button className="add-button" onClick={() => setShowForm(true)}>
-                    Add New Category
-                </button>
+                {user && (
+                    <button className="add-button" onClick={() => setShowForm(true)}>
+                        Add New Category
+                    </button>
+                )}
             </div>
 
             {showForm && (
@@ -115,12 +119,14 @@ function CategoriesPage() {
                     <div className="category-row" key={category.id}>
                         <span>{category.name}</span>
 
-                        <div className="category-actions">
-                            <button onClick={() => handleEdit(category)}>Edit</button>
-                            <button className="danger" onClick={() => handleDelete(category.id)}>
-                                Delete
-                            </button>
-                        </div>
+                        {user && (
+                            <div className="category-actions">
+                                <button onClick={() => handleEdit(category)}>Edit</button>
+                                <button className="danger" onClick={() => handleDelete(category.id)}>
+                                    Delete
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

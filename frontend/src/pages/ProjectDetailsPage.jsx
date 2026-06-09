@@ -12,6 +12,7 @@ import {
 import { getUsers } from '../services/userService'
 import ProjectForm from '../components/ProjectForm'
 import { getCategories } from '../services/categoryService'
+import { useAuth } from '../context/AuthContext'
 
 function ProjectDetailsPage() {
     const { id } = useParams()
@@ -22,6 +23,7 @@ function ProjectDetailsPage() {
     const [selectedUserId, setSelectedUserId] = useState('')
     const [showEditForm, setShowEditForm] = useState(false)
     const [categories, setCategories] = useState([])
+    const { user } = useAuth()
 
     const [form, setForm] = useState({
         title: '',
@@ -129,12 +131,14 @@ function ProjectDetailsPage() {
                     Category: {project.category ? project.category.name : 'No category'}
                 </p>
 
-                <div className="card-actions">
-                    <button onClick={openEditForm}>Edit Project</button>
-                    <button className="danger" onClick={handleDelete}>
-                        Delete Project
-                    </button>
-                </div>
+                {user && (
+                    <div className="card-actions">
+                        <button onClick={openEditForm}>Edit Project</button>
+                        <button className="danger" onClick={handleDelete}>
+                            Delete Project
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className="details-card">
@@ -142,18 +146,20 @@ function ProjectDetailsPage() {
 
                 {project.participants && project.participants.length > 0 ? (
                     <ul className="participants-list">
-                        {project.participants.map(user => (
-                            <li key={user.id}>
+                        {project.participants.map(participant => (
+                            <li key={participant.id}>
                                 <span>
-                                    {user.full_name} ({user.role})
+                                    {participant.full_name} ({participant.role})
                                 </span>
 
-                                <button
-                                    className="small-danger"
-                                    onClick={() => handleRemoveParticipant(user.id)}
-                                >
-                                    Remove
-                                </button>
+                                {user && (
+                                    <button
+                                        className="small-danger"
+                                        onClick={() => handleRemoveParticipant(participant.id)}
+                                    >
+                                        Remove
+                                    </button>
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -176,22 +182,24 @@ function ProjectDetailsPage() {
                     </div>
                 )}
 
-                <div className="participant-form">
-                    <select
-                        value={selectedUserId}
-                        onChange={e => setSelectedUserId(e.target.value)}
-                    >
-                        <option value="">Select user</option>
+                {user && (
+                    <div className="participant-form">
+                        <select
+                            value={selectedUserId}
+                            onChange={e => setSelectedUserId(e.target.value)}
+                        >
+                            <option value="">Select user</option>
 
-                        {users.map(user => (
-                            <option key={user.id} value={user.id}>
-                                {user.full_name} - {user.role}
-                            </option>
-                        ))}
-                    </select>
+                            {users.map(user => (
+                                <option key={user.id} value={user.id}>
+                                    {user.full_name} - {user.role}
+                                </option>
+                            ))}
+                        </select>
 
-                    <button onClick={handleAddParticipant}>Add Participant</button>
-                </div>
+                        <button onClick={handleAddParticipant}>Add Participant</button>
+                    </div>
+                )}
             </div>
         </section>
     )
