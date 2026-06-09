@@ -29,11 +29,38 @@ Content-Type: application/json
 ### Me
 GET http://127.0.0.1:8000/api/me
 Accept: application/json
-Authorization: Bearer 4|61yupAJbQzowQx2aeSN7lYrEXCS0HOXnkvJQQXux1fa2d201
+Authorization: Bearer 15|k5kakhn6MGOx32pc55oxKawgH2Dq8DCqm6ab9SLScef79604
+
+###Create Request
+POST http://127.0.0.1:8000/api/projects/13/requests
+Accept: application/json
+Authorization: Bearer 15|k5kakhn6MGOx32pc55oxKawgH2Dq8DCqm6ab9SLScef79604
+Content-Type: application/json
+
+{
+    "message": "I want to participate."
+}
 
 ###
-
 ### Logout
 POST http://127.0.0.1:8000/api/logout
 Accept: application/json
-Authorization: Bearer 4|61yupAJbQzowQx2aeSN7lYrEXCS0HOXnkvJQQXux1fa2d201
+Authorization: Bearer 15|k5kakhn6MGOx32pc55oxKawgH2Dq8DCqm6ab9SLScef79604
+
+### Send Request for project
+POST http://127.0.0.1:8000/api/projects/1/requests
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 15|k5kakhn6MGOx32pc55oxKawgH2Dq8DCqm6ab9SLScef79604
+
+{
+    "message": "I would like to participate in this project."
+}
+###
+GET http://127.0.0.1:8000/api/project-requests
+Accept: application/json
+Authorization: Bearer 15|k5kakhn6MGOx32pc55oxKawgH2Dq8DCqm6ab9SLScef79604
+###
+POST http://127.0.0.1:8000/api/project-requests/1/accept
+Accept: application/json
+Authorization: Bearer 15|k5kakhn6MGOx32pc55oxKawgH2Dq8DCqm6ab9SLScef79604

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/projects/{project}/participants/{user}', [ProjectController::class, 'addParticipant']);
 
     Route::delete('/projects/{project}/participants/{user}', [ProjectController::class, 'removeParticipant']);
+
+    /*
+   |--------------------------------------------------------------------------
+   | Project requests
+   |--------------------------------------------------------------------------
+   */
+
+    Route::get('/project-requests', [ProjectRequestController::class, 'index']);
+
+    Route::post('/projects/{project}/requests', [ProjectRequestController::class, 'store']);
+
+    Route::post('/project-requests/{projectRequest}/accept', [ProjectRequestController::class, 'accept']);
+
+    Route::post('/project-requests/{projectRequest}/reject', [ProjectRequestController::class, 'reject']);
 });
