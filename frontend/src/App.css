@@ -438,3 +438,7 @@ button.danger {
 .nav-user {
     text-decoration: none;
 }
+.creator-text {
+    font-weight: 600;
+    color: #4b5563;
+}

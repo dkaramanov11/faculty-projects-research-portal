@@ -5,33 +5,36 @@ export function getCategories() {
         .then(response => response.json())
 }
 
-export function createCategory(category) {
+export function createCategory(category, token) {
     return fetch(API_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(category)
     }).then(response => response.json())
 }
 
-export function updateCategory(id, category) {
+export function updateCategory(id, category, token) {
     return fetch(`${API_URL}/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(category)
     }).then(response => response.json())
 }
 
-export function deleteCategory(id) {
+export function deleteCategory(id, token) {
     return fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     })
 }

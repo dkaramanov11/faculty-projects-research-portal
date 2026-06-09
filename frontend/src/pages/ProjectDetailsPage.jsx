@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 import {
     getProject,
@@ -12,7 +13,6 @@ import {
 import { getUsers } from '../services/userService'
 import ProjectForm from '../components/ProjectForm'
 import { getCategories } from '../services/categoryService'
-import { useAuth } from '../context/AuthContext'
 
 function ProjectDetailsPage() {
     const { id } = useParams()
@@ -24,6 +24,7 @@ function ProjectDetailsPage() {
     const [showEditForm, setShowEditForm] = useState(false)
     const [categories, setCategories] = useState([])
     const { user } = useAuth()
+    const { token } = useAuth()
 
     const [form, setForm] = useState({
         title: '',
@@ -48,7 +49,7 @@ function ProjectDetailsPage() {
     }
 
     function handleDelete() {
-        deleteProject(id).then(() => {
+        deleteProject(id, token).then(() => {
             navigate('/projects')
         })
     }
@@ -58,14 +59,14 @@ function ProjectDetailsPage() {
             return
         }
 
-        addParticipant(id, selectedUserId).then(() => {
+        addParticipant(id, selectedUserId, token).then(() => {
             setSelectedUserId('')
             loadProject()
         })
     }
 
     function handleRemoveParticipant(userId) {
-        removeParticipant(id, userId).then(() => {
+        removeParticipant(id, userId, token).then(() => {
             loadProject()
         })
     }
@@ -104,7 +105,7 @@ function ProjectDetailsPage() {
     function handleUpdate(e) {
         e.preventDefault()
 
-        updateProject(id, form).then(() => {
+        updateProject(id, form, token).then(() => {
             loadProject()
             setShowEditForm(false)
         })
@@ -129,6 +130,13 @@ function ProjectDetailsPage() {
 
                 <p className="category-text">
                     Category: {project.category ? project.category.name : 'No category'}
+                </p>
+
+                <p className="creator-text">
+                    Created by:{' '}
+                    {project.creator
+                        ? `${project.creator.full_name} (${project.creator.role})`
+                        : 'Unknown'}
                 </p>
 
                 {user && (

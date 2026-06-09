@@ -15,7 +15,7 @@ function CategoriesPage() {
     const [form, setForm] = useState({
         name: ''
     })
-    const { user } = useAuth()
+    const { user, token } = useAuth()
 
     useEffect(() => {
         loadCategories()
@@ -46,8 +46,8 @@ function CategoriesPage() {
         e.preventDefault()
 
         const request = editingId
-            ? updateCategory(editingId, form)
-            : createCategory(form)
+            ? updateCategory(editingId, form, token)
+            : createCategory(form, token)
 
         request.then(() => {
             loadCategories()
@@ -65,7 +65,7 @@ function CategoriesPage() {
     }
 
     function handleDelete(id) {
-        deleteCategory(id)
+        deleteCategory(id, token)
             .then(() => loadCategories())
     }
 

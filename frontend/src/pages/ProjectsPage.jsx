@@ -24,6 +24,7 @@ function ProjectsPage() {
     const [editingId, setEditingId] = useState(null)
     const [showForm, setShowForm] = useState(false)
     const { user } = useAuth()
+    const { token } = useAuth()
 
     const [form, setForm] = useState({
         title: '',
@@ -71,8 +72,8 @@ function ProjectsPage() {
         e.preventDefault()
 
         const request = editingId
-            ? updateProject(editingId, form)
-            : createProject(form)
+            ? updateProject(editingId, form, token)
+            : createProject(form, token)
 
         request.then(() => {
             loadProjects()
@@ -94,7 +95,7 @@ function ProjectsPage() {
     }
 
     function handleDelete(id) {
-        deleteProject(id).then(() => loadProjects())
+        deleteProject(id, token).then(() => loadProjects())
     }
 
     function handleAddParticipant(projectId, userId) {
