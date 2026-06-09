@@ -33,8 +33,12 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request) : ProjectResource
     {
+        $data = $request->validated();
+
+        $data['created_by'] = auth()->id();
+
        $project = Project::query()
-           ->create($request->validated());
+           ->create($data);
 
         return ProjectResource::make($project);
     }

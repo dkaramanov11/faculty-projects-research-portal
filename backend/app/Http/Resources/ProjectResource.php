@@ -24,6 +24,7 @@ class ProjectResource extends JsonResource
                 'id' => $this->category->id,
                 'name' => $this->category->name,
             ] : null,
+            'creator' => $this->creator ? UserResource::make($this->creator) : null,
             'participants' => UserResource::collection($this->participants),
         ];
     }

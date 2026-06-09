@@ -19,6 +19,7 @@ class Project extends Model
         'type',
         'status',
         'category_id',
+        'created_by',
     ];
 
     protected $casts = [
@@ -34,5 +35,10 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class)
             ->withTimestamps();
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
