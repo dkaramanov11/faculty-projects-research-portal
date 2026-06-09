@@ -29,6 +29,9 @@ function Navbar() {
                         <Link to="/register">Register</Link>
                     </>
                 )}
+
+                {user && <Link to="/requests">Requests</Link>}
+
             </div>
         </nav>
     )

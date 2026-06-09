@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { sendProjectRequest } from '../services/projectRequestService'
 
 import {
     getProject,
@@ -23,8 +24,8 @@ function ProjectDetailsPage() {
     const [selectedUserId, setSelectedUserId] = useState('')
     const [showEditForm, setShowEditForm] = useState(false)
     const [categories, setCategories] = useState([])
-    const { user } = useAuth()
-    const { token } = useAuth()
+    const { user, token } = useAuth()
+    const [requestMessage, setRequestMessage] = useState('')
 
     const [form, setForm] = useState({
         title: '',
@@ -108,6 +109,13 @@ function ProjectDetailsPage() {
         updateProject(id, form, token).then(() => {
             loadProject()
             setShowEditForm(false)
+        })
+    }
+
+    function handleSendRequest() {
+        sendProjectRequest(id, requestMessage, token).then(() => {
+            setRequestMessage('')
+            alert('Request sent successfully.')
         })
     }
 
@@ -206,6 +214,22 @@ function ProjectDetailsPage() {
                         </select>
 
                         <button onClick={handleAddParticipant}>Add Participant</button>
+                    </div>
+                )}
+
+                {user && project.creator && user.id !== project.creator.id && (
+                    <div className="details-card">
+                        <h2>Send Participation Request</h2>
+
+                        <textarea
+                            placeholder="Write a short message..."
+                            value={requestMessage}
+                            onChange={e => setRequestMessage(e.target.value)}
+                        />
+
+                        <button onClick={handleSendRequest}>
+                            Send Request
+                        </button>
                     </div>
                 )}
             </div>
