@@ -442,3 +442,7 @@ button.danger {
     font-weight: 600;
     color: #4b5563;
 }
+.success-text {
+    color: #166534;
+    font-weight: bold;
+}

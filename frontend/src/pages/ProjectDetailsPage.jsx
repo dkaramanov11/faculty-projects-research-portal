@@ -26,6 +26,7 @@ function ProjectDetailsPage() {
     const [categories, setCategories] = useState([])
     const { user, token } = useAuth()
     const [requestMessage, setRequestMessage] = useState('')
+    const [requestSent, setRequestSent] = useState(false)
 
     const [form, setForm] = useState({
         title: '',
@@ -119,6 +120,19 @@ function ProjectDetailsPage() {
         })
     }
 
+    function handleSendRequest() {
+        sendProjectRequest(id, requestMessage, token).then(() => {
+            setRequestMessage('')
+            setRequestSent(true)
+        })
+    }
+
+    const isCreator = user && project.creator && user.id === project.creator.id
+    const isParticipant =
+        user &&
+        project.participants &&
+        project.participants.some(participant => participant.id === user.id)
+
     return (
         <section className="details-page">
             <button className="secondary" onClick={() => navigate('/projects')}>
@@ -147,7 +161,7 @@ function ProjectDetailsPage() {
                         : 'Unknown'}
                 </p>
 
-                {user && (
+                {isCreator && (
                     <div className="card-actions">
                         <button onClick={openEditForm}>Edit Project</button>
                         <button className="danger" onClick={handleDelete}>
@@ -217,7 +231,7 @@ function ProjectDetailsPage() {
                     </div>
                 )}
 
-                {user && project.creator && user.id !== project.creator.id && (
+                {user && project.creator && !isCreator && !isParticipant && (
                     <div className="details-card">
                         <h2>Send Participation Request</h2>
 
@@ -227,9 +241,13 @@ function ProjectDetailsPage() {
                             onChange={e => setRequestMessage(e.target.value)}
                         />
 
-                        <button onClick={handleSendRequest}>
-                            Send Request
-                        </button>
+                        {requestSent ? (
+                            <p className="success-text">Request sent.</p>
+                        ) : (
+                            <button onClick={handleSendRequest}>
+                                Send Request
+                            </button>
+                        )}
                     </div>
                 )}
             </div>
