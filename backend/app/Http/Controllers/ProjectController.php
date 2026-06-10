@@ -62,8 +62,16 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProjectRequest $request, Project $project) : ProjectResource
+    public function update(ProjectRequest $request, Project $project) : ProjectResource|JsonResponse
     {
+
+        if ($project->created_by !== auth()->id()) {
+            return response()->json([
+                'message' => 'You are not allowed to update this project.'
+            ], 403);
+        }
+
+
         $project->update($request->validated());
 
         return ProjectResource::make($project);
@@ -75,6 +83,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project) : \Illuminate\Http\JsonResponse
     {
+        if ($project->created_by !== auth()->id()) {
+            return response()->json([
+                'message' => 'You are not allowed to delete this project.'
+            ], 403);
+        }
+
         $project->delete();
 
         return response()->json([

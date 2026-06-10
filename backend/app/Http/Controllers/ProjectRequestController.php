@@ -37,11 +37,32 @@ class ProjectRequestController extends Controller
     /**
      * Send request to join
      */
-    public function store(Request $request, Project $project): ProjectRequestResource
+    public function store(Request $request, Project $project): ProjectRequestResource|JsonResponse
     {
         $validated = $request->validate([
             'message' => ['nullable', 'string'],
         ]);
+
+        //Да не може да прати барање ако веќе е participant
+        if ($project->participants()->where('users.id', auth()->id())->exists()) {
+            return response()->json([
+                'message' => 'You are already a participant in this project.'
+            ], 422);
+        }
+
+        //Да не може да прати дупло pending барање
+        $existingRequest = ProjectRequest::query()
+            ->where('project_id', $project->id)
+            ->where('sender_id', auth()->id())
+            ->where('status', ProjectRequestStatus::PENDING)
+            ->exists();
+
+        if ($existingRequest) {
+            return response()->json([
+                'message' => 'You already have a pending request for this project.'
+            ], 422);
+        }
+        //
 
         $projectRequest = ProjectRequest::query()->create([
             'project_id' => $project->id,
@@ -86,8 +107,14 @@ class ProjectRequestController extends Controller
     {
         //
     }
-    public function accept(ProjectRequest $projectRequest): ProjectRequestResource
+    public function accept(ProjectRequest $projectRequest): ProjectRequestResource|JsonResponse
     {
+        if ($projectRequest->receiver_id !== auth()->id()) {
+            return response()->json([
+                'message' => 'You are not allowed to accept this request.'
+            ], 403);
+        }
+
         $projectRequest->update([
             'status' => ProjectRequestStatus::ACCEPTED,
         ]);
@@ -99,8 +126,14 @@ class ProjectRequestController extends Controller
         return ProjectRequestResource::make($projectRequest);
     }
 
-    public function reject(ProjectRequest $projectRequest): ProjectRequestResource
+    public function reject(ProjectRequest $projectRequest): ProjectRequestResource|JsonResponse
     {
+        if ($projectRequest->receiver_id !== auth()->id()) {
+            return response()->json([
+                'message' => 'You are not allowed to reject this request.'
+            ], 403);
+        }
+
         $projectRequest->update([
             'status' => ProjectRequestStatus::REJECTED,
         ]);
