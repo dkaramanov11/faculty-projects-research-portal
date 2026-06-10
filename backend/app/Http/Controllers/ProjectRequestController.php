@@ -10,6 +10,7 @@ use App\Http\Resources\ProjectRequestResource;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Models\User;
 
 class ProjectRequestController extends Controller
 {
@@ -119,9 +120,13 @@ class ProjectRequestController extends Controller
             'status' => ProjectRequestStatus::ACCEPTED,
         ]);
 
+        $userIdToAdd = $projectRequest->type === ProjectRequestType::INVITATION
+            ? $projectRequest->receiver_id
+            : $projectRequest->sender_id;
+
         $projectRequest->project
             ->participants()
-            ->syncWithoutDetaching([$projectRequest->sender_id]);
+            ->syncWithoutDetaching([$userIdToAdd]);
 
         return ProjectRequestResource::make($projectRequest);
     }
@@ -136,6 +141,55 @@ class ProjectRequestController extends Controller
 
         $projectRequest->update([
             'status' => ProjectRequestStatus::REJECTED,
+        ]);
+
+        return ProjectRequestResource::make($projectRequest);
+    }
+
+    public function invite(Request $request, Project $project, User $user): ProjectRequestResource|JsonResponse
+    {
+        $validated = $request->validate([
+            'message' => ['nullable', 'string'],
+        ]);
+
+        $isCreator = $project->created_by === auth()->id();
+
+        $isProfessorParticipant = $project->participants()
+            ->where('users.id', auth()->id())
+            ->where('users.role', 'professor')
+            ->exists();
+
+        if (!$isCreator && !$isProfessorParticipant) {
+            return response()->json([
+                'message' => 'You are not allowed to invite users to this project.'
+            ], 403);
+        }
+
+        if ($project->participants()->where('users.id', $user->id)->exists()) {
+            return response()->json([
+                'message' => 'This user is already a participant in this project.'
+            ], 422);
+        }
+
+        $existingRequest = ProjectRequest::query()
+            ->where('project_id', $project->id)
+            ->where('receiver_id', $user->id)
+            ->where('status', ProjectRequestStatus::PENDING)
+            ->exists();
+
+        if ($existingRequest) {
+            return response()->json([
+                'message' => 'This user already has a pending invitation for this project.'
+            ], 422);
+        }
+
+        $projectRequest = ProjectRequest::query()->create([
+            'project_id' => $project->id,
+            'sender_id' => auth()->id(),
+            'receiver_id' => $user->id,
+            'type' => ProjectRequestType::INVITATION,
+            'status' => ProjectRequestStatus::PENDING,
+            'message' => $validated['message'] ?? null,
         ]);
 
         return ProjectRequestResource::make($projectRequest);
