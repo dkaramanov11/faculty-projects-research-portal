@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { sendProjectRequest } from '../services/projectRequestService'
+import { inviteUserToProject } from '../services/projectRequestService'
 
 import {
     getProject,
@@ -27,6 +28,11 @@ function ProjectDetailsPage() {
     const { user, token } = useAuth()
     const [requestMessage, setRequestMessage] = useState('')
     const [requestSent, setRequestSent] = useState(false)
+    const [selectedProfessorId, setSelectedProfessorId] = useState('')
+    const [inviteMessage, setInviteMessage] = useState('')
+    const [studentSearch, setStudentSearch] = useState('')
+    const [selectedStudentId, setSelectedStudentId] = useState('')
+    const [studentInviteMessage, setStudentInviteMessage] = useState('')
 
     const [form, setForm] = useState({
         title: '',
@@ -127,11 +133,60 @@ function ProjectDetailsPage() {
         })
     }
 
+    function isProjectParticipant(userId) {
+        return project.participants?.some(participant => participant.id === userId)
+    }
     const isCreator = user && project.creator && user.id === project.creator.id
     const isParticipant =
         user &&
         project.participants &&
         project.participants.some(participant => participant.id === user.id)
+    const professors = users.filter(user =>
+        user.role === 'professor' &&
+        !isProjectParticipant(user.id)
+    )
+    const students = users.filter(user =>
+        user.role === 'student' &&
+        !isProjectParticipant(user.id) &&
+        user.full_name.toLowerCase().includes(studentSearch.toLowerCase())
+    )
+    const isProfessorParticipant =
+        user &&
+        project.participants &&
+        project.participants.some(
+            participant =>
+                participant.id === user.id &&
+                participant.role === 'professor'
+        )
+    function handleInviteStudent() {
+        inviteUserToProject(
+            id,
+            selectedStudentId,
+            studentInviteMessage,
+            token
+        ).then(() => {
+            setSelectedStudentId('')
+            setStudentSearch('')
+            setStudentInviteMessage('')
+            alert('Student invitation sent successfully.')
+        })
+    }
+
+
+    const canManageProject = isCreator || isProfessorParticipant
+
+    function handleInviteProfessor() {
+        inviteUserToProject(
+            id,
+            selectedProfessorId,
+            inviteMessage,
+            token
+        ).then(() => {
+            setSelectedProfessorId('')
+            setInviteMessage('')
+            alert('Invitation sent successfully.')
+        })
+    }
 
     return (
         <section className="details-page">
@@ -228,6 +283,78 @@ function ProjectDetailsPage() {
                         </select>
 
                         <button onClick={handleAddParticipant}>Add Participant</button>
+                    </div>
+                )}
+
+                {canManageProject  && (
+                    <div className="details-card">
+                        <h2>Add Professor</h2>
+
+                        <select
+                            value={selectedProfessorId}
+                            onChange={e => setSelectedProfessorId(e.target.value)}
+                        >
+                            <option value="">Select professor</option>
+
+                            {professors.map(professor => (
+                                <option key={professor.id} value={professor.id}>
+                                    {professor.full_name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <textarea
+                            placeholder="Invitation message..."
+                            value={inviteMessage}
+                            onChange={e => setInviteMessage(e.target.value)}
+                        />
+
+                        <button
+                            onClick={handleInviteProfessor}
+                            disabled={!selectedProfessorId}
+                        >
+                            Send Invitation
+                        </button>
+                    </div>
+                )}
+
+                {canManageProject && (
+                    <div className="details-card">
+                        <h2>Add Student</h2>
+
+                        <input
+                            placeholder="Search student by name..."
+                            value={studentSearch}
+                            onChange={e => setStudentSearch(e.target.value)}
+                        />
+
+                        {studentSearch && (
+                            <div className="search-results">
+                                {students.map(student => (
+                                    <button
+                                        key={student.id}
+                                        type="button"
+                                        className="search-result"
+                                        onClick={() => setSelectedStudentId(student.id)}
+                                    >
+                                        {student.full_name} (@{student.username})
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
+                        <textarea
+                            placeholder="Invitation message..."
+                            value={studentInviteMessage}
+                            onChange={e => setStudentInviteMessage(e.target.value)}
+                        />
+
+                        <button
+                            onClick={handleInviteStudent}
+                            disabled={!selectedStudentId}
+                        >
+                            Send Student Invitation
+                        </button>
                     </div>
                 )}
 
