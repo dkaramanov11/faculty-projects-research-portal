@@ -1,7 +1,13 @@
 .details-page {
+    max-width: 1200px;
+    margin: 0 auto;
+
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 22px;
+}
+.details-card {
+    width: 100%;
 }
 
 .category-text {
@@ -71,4 +77,117 @@
 .empty-text {
     color: #6b7280;
     font-size: 14px;
+}
+.participants-card h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+.participants-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+.participant-group {
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    background: #ffffff;
+}
+.participant-group h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #0f172a;
+}
+
+.participant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 16px;
+    border-radius: 14px;
+
+    background: #eff6ff;
+    margin-bottom: 12px;
+}
+
+.participant-item p {
+    margin: 6px 0 0;
+    color: #64748b;
+}
+
+.participant-add-button {
+    margin-top: 10px;
+    width: 160px;
+    background: white;
+    border: 1px solid #64748b;
+}
+
+.participant-add-button:hover {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+
+@media (max-width: 900px) {
+    .participants-columns {
+        grid-template-columns: 1fr;
+    }
+}
+.participation-request-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.participation-request-card h2 {
+    margin: 0 0 6px;
+}
+
+.participation-request-card p {
+    margin: 0;
+    color: #64748b;
+}
+
+@media (max-width: 700px) {
+    .participation-request-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+.back-button-wrapper {
+    max-width: 1200px;
+    margin: 0 auto 18px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    background: white;
+    color: #0f172a;
+
+    padding: 12px 18px;
+    border-radius: 12px;
+
+    text-decoration: none;
+    font-weight: 600;
+
+    border: 2px solid #e5e7eb;
+
+    transition: 0.2s ease;
+    max-width: 170px;
+    text-align: center;
+}
+
+.back-button:hover {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.project-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 24px;
 }

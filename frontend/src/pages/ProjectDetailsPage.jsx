@@ -1,6 +1,5 @@
 import ProjectInfoCard from '../components/project-details/ProjectInfoCard'
 import ProjectParticipants from '../components/project-details/ProjectParticipants'
-import ProjectActionButtons from '../components/project-details/ProjectActionButtons'
 
 import SendRequestModal from '../components/project-details/modals/SendRequestModal'
 import InviteProfessorModal from '../components/project-details/modals/InviteProfessorModal'
@@ -19,10 +18,10 @@ function ProjectDetailsPage() {
     return (
         <section className="details-page">
             <button
-                className="secondary"
+                className="back-button"
                 onClick={() => details.navigate('/projects')}
             >
-                Back to Projects
+                        ←  Back to Projects
             </button>
 
             <ProjectInfoCard
@@ -34,18 +33,22 @@ function ProjectDetailsPage() {
 
             <ProjectParticipants
                 participants={details.project.participants || []}
+                canManageProject={details.canManageProject}
+                onAddProfessor={() => details.setShowProfessorModal(true)}
+                onAddStudent={() => details.setShowStudentModal(true)}
             />
 
-            {details.user && (
-                <ProjectActionButtons
-                    canSendRequest={details.canSendRequest}
-                    canManageProject={details.canManageProject}
-                    isCreator={details.isCreator}
-                    isParticipant={details.isParticipant}
-                    onOpenRequestModal={() => details.setShowRequestModal(true)}
-                    onOpenProfessorModal={() => details.setShowProfessorModal(true)}
-                    onOpenStudentModal={() => details.setShowStudentModal(true)}
-                />
+            {details.canSendRequest && (
+                <div className="details-card participation-request-card">
+                    <div>
+                        <h2>Want to participate?</h2>
+                        <p>Send a participation request to the project creator.</p>
+                    </div>
+
+                    <button onClick={() => details.setShowRequestModal(true)}>
+                        Send Participation Request
+                    </button>
+                </div>
             )}
 
             <EditProjectModal

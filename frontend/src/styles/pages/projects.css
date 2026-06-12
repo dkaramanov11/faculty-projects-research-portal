@@ -1,30 +1,60 @@
-.hero {
-    background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    color: white;
+.projects-header {
+    max-width: 1308px;
+    margin: 28px auto 0;
 
-    padding: 32px;
-    border-radius: 18px;
-
-    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.hero h1 {
-    margin: 0 0 10px;
-    font-size: 36px;
-}
-
-.hero p {
+.projects-header h1 {
     margin: 0;
-    opacity: 0.9;
-    font-size: 16px;
+    font-size: 38px;
+    color: #0f172a;
+}
+
+.title-line {
+    width: 44px;
+    height: 4px;
+    background: #2563eb;
+    border-radius: 999px;
+    margin: 8px 0 10px;
+}
+
+.projects-header {
+    margin-top: 28px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-tabs {
+    margin: 26px 0 22px;
+
+    display: flex;
+    gap: 10px;
 }
 
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    margin: 0 auto;
 
-    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 420px);
+    gap: 28px;
+
+    justify-content: center;
+}
+
+.projects-grid {
+    max-width: 1380px;
+    margin: 28px auto 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, 420px);
+    gap: 28px;
+
+    justify-content: center;
 }
 
 .project-card-link {
@@ -32,33 +62,17 @@
     color: inherit;
 }
 
-.project-card h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.project-card p {
-    color: #4b5563;
-    line-height: 1.5;
-}
-
 .card-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
-    margin-bottom: 14px;
-}
-
-.card-actions {
-    display: flex;
-    gap: 10px;
-
-    margin-top: 20px;
+    margin-bottom: 18px;
 }
 
 .badge,
 .status {
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 999px;
 
     font-size: 12px;
@@ -69,25 +83,124 @@
 
 .badge {
     background: #dbeafe;
-    color: #1e40af;
+    color: #1d4ed8;
 }
 
 .status.active {
     background: #dcfce7;
-    color: #166534;
+    color: #15803d;
 }
 
 .status.completed {
     background: #e5e7eb;
-    color: #374151;
+    color: #334155;
 }
 
 .status.draft {
     background: #fef3c7;
-    color: #92400e;
+    color: #d97706;
 }
 
-.participants-count {
+.project-card h3 {
+    margin: 0 0 12px;
+
+    color: #0f172a;
+    font-size: 21px;
+}
+
+.project-description {
+    margin: 0;
+    color: #475569;
+    line-height: 1.6;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+.project-meta-row {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid #e5e7eb;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.project-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.project-meta p {
+    margin: 0;
+    color: #475569;
+}
+
+.project-meta strong {
+    color: #2563eb;
+}
+
+.details-arrow {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eef2ff;
+    color: #1d4ed8;
+
+    font-size: 22px;
+    font-weight: bold;
+}
+.project-tabs {
+    display: flex;
+    gap: 14px;
+
+    margin-top: 24px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.project-tabs button {
+    background: white;
+    color: #334155;
+
+    border: 1px solid #dbeafe;
+
+    padding: 12px 22px;
+
+    font-size: 15px;
     font-weight: 600;
-    color: #4b5563;
+}
+
+.project-tabs .active-tab {
+    background: #2563eb;
+    color: white;
+}
+@media (max-width: 1400px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 420px);
+    }
+}
+
+@media (max-width: 950px) {
+    .projects-grid {
+        grid-template-columns: 420px;
+    }
+
+    .projects-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
 }

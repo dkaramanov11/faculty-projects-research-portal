@@ -22,10 +22,10 @@ button.danger {
 }
 
 .add-button {
-    margin-bottom: 24px;
     background: #16a34a;
-    height: 50px;
-    font-size: 18px;
+    height: 52px;
+    font-size: 17px;
+    padding: 0 24px;
 }
 
 .secondary-button {

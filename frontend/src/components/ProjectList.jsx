@@ -10,8 +10,6 @@ function ProjectList({
                      }) {
     return (
         <section>
-            <h2>Projects</h2>
-
             <div className="projects-grid">
                 {projects.map(project => (
                     <ProjectCard

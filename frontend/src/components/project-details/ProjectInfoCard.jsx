@@ -28,7 +28,7 @@ function ProjectInfoCard({
             </p>
 
             {isCreator && (
-                <div className="card-actions">
+                <div className="project-actions">
                     <button onClick={onEdit}>Edit Project</button>
                     <button className="danger" onClick={onDelete}>
                         Delete Project

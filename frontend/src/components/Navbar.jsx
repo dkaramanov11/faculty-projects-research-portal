@@ -1,39 +1,105 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 function Navbar() {
     const { user, logoutUser } = useAuth()
 
     return (
-        <nav className="navbar">
-            <h2>Faculty Projects Portal</h2>
+        <div className="navbar-wrapper">
 
-            <div className="nav-links">
-                <Link to="/projects">Projects</Link>
-                <Link to="/categories">Categories</Link>
-                <Link to="/users">Users</Link>
+            <nav className="navbar">
 
-                {user ? (
-                    <>
-                        <Link to="/profile" className="nav-user">
-                            {user.full_name}
-                        </Link>
+                <div className="navbar-left">
+                    <div className="navbar-logo">
+                        🎓
+                    </div>
 
-                        <button className="logout-button" onClick={logoutUser}>
-                            Logout
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
-                    </>
-                )}
+                    <h2>Faculty Projects Portal</h2>
+                </div>
 
-                {user && <Link to="/requests">Requests</Link>}
+                <div className="nav-links">
 
-            </div>
-        </nav>
+                    <NavLink
+                        to="/projects"
+                        className={({ isActive }) =>
+                            isActive ? 'active' : ''
+                        }
+                    >
+                        Projects
+                    </NavLink>
+
+                    <NavLink
+                        to="/categories"
+                        className={({ isActive }) =>
+                            isActive ? 'active' : ''
+                        }
+                    >
+                        Categories
+                    </NavLink>
+
+                    <NavLink
+                        to="/users"
+                        className={({ isActive }) =>
+                            isActive ? 'active' : ''
+                        }
+                    >
+                        Users
+                    </NavLink>
+
+                    {user && (
+                        <NavLink
+                            to="/requests"
+                            className={({ isActive }) =>
+                                isActive ? 'active' : ''
+                            }
+                        >
+                            Requests
+                        </NavLink>
+                    )}
+
+                    {user ? (
+                        <>
+                            <NavLink
+                                to="/profile"
+                                className="nav-user"
+                            >
+                                {user.full_name}
+                            </NavLink>
+
+                            <button
+                                className="logout-button"
+                                onClick={logoutUser}
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink
+                                to="/login"
+                                className={({ isActive }) =>
+                                    isActive ? 'active' : ''
+                                }
+                            >
+                                Login
+                            </NavLink>
+
+                            <NavLink
+                                to="/register"
+                                className={({ isActive }) =>
+                                    isActive ? 'active' : ''
+                                }
+                            >
+                                Register
+                            </NavLink>
+                        </>
+                    )}
+
+                </div>
+
+            </nav>
+
+        </div>
     )
 }
 

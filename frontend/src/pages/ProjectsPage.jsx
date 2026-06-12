@@ -1,150 +1,75 @@
-import { useEffect, useState } from 'react'
-
-import Header from '../components/Navbar'
 import ProjectForm from '../components/ProjectForm'
 import ProjectList from '../components/ProjectList'
-import { useAuth } from '../context/AuthContext'
-
-import {
-    getProjects,
-    createProject,
-    updateProject,
-    deleteProject,
-    addParticipant,
-    removeParticipant
-} from '../services/projectService'
-
-import { getCategories } from '../services/categoryService'
-import { getUsers } from '../services/userService'
+import { useProjects } from '../hooks/useProjects'
 
 function ProjectsPage() {
-    const [projects, setProjects] = useState([])
-    const [categories, setCategories] = useState([])
-    const [users, setUsers] = useState([])
-    const [editingId, setEditingId] = useState(null)
-    const [showForm, setShowForm] = useState(false)
-    const { user } = useAuth()
-    const { token } = useAuth()
-
-    const [form, setForm] = useState({
-        title: '',
-        description: '',
-        type: 'project',
-        status: 'active',
-        category_id: ''
-    })
-
-    useEffect(() => {
-        loadProjects()
-        loadCategories()
-        loadUsers()
-    }, [])
-
-    function loadProjects() {
-        getProjects().then(data => setProjects(data.data))
-    }
-
-    function loadCategories() {
-        getCategories().then(data => setCategories(data.data))
-    }
-
-    function handleChange(e) {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    function resetForm() {
-        setForm({
-            title: '',
-            description: '',
-            type: 'project',
-            status: 'active',
-            category_id: ''
-        })
-
-        setEditingId(null)
-        setShowForm(false)
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault()
-
-        const request = editingId
-            ? updateProject(editingId, form, token)
-            : createProject(form, token)
-
-        request.then(() => {
-            loadProjects()
-            resetForm()
-        })
-    }
-
-    function handleEdit(project) {
-        setEditingId(project.id)
-        setShowForm(true)
-
-        setForm({
-            title: project.title,
-            description: project.description,
-            type: project.type,
-            status: project.status,
-            category_id: project.category ? project.category.id : ''
-        })
-    }
-
-    function handleDelete(id) {
-        deleteProject(id, token).then(() => loadProjects())
-    }
-
-    function handleAddParticipant(projectId, userId) {
-        addParticipant(projectId, userId)
-            .then(() => loadProjects())
-    }
-
-    function handleRemoveParticipant(projectId, userId) {
-        removeParticipant(projectId, userId)
-            .then(() => loadProjects())
-    }
-
-
-    function loadUsers() {
-        getUsers()
-            .then(data => setUsers(data.data))
-    }
+    const projects = useProjects()
 
     return (
         <>
-            {user && (
-                <button className="add-button" onClick={() => setShowForm(true)}>
-                    Add New Project
-                </button>
-            )}
-
-            {showForm && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <ProjectForm
-                            form={form}
-                            editingId={editingId}
-                            categories={categories}
-                            onChange={handleChange}
-                            onSubmit={handleSubmit}
-                            onCancel={resetForm}
-                        />
+            <div className="container">
+                <section className="projects-header">
+                    <div>
+                        <h1>Projects</h1>
+                        <div className="title-line"></div>
+                        <p>Browse and manage all faculty projects and research papers.</p>
                     </div>
-                </div>
-            )}
 
-            <ProjectList
-                projects={projects}
-                users={users}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onAddParticipant={handleAddParticipant}
-                onRemoveParticipant={handleRemoveParticipant}
-            />
+                    {projects.user && (
+                        <button
+                            className="add-button"
+                            onClick={() => projects.setShowForm(true)}
+                        >
+                            + Add New Project
+                        </button>
+                    )}
+                </section>
+                <div className="project-tabs">
+                    <button
+                        className={projects.selectedType === 'all' ? 'active-tab' : ''}
+                        onClick={() => projects.setSelectedType('all')}
+                    >
+                        All
+                    </button>
+
+                    <button
+                        className={projects.selectedType === 'project' ? 'active-tab' : ''}
+                        onClick={() => projects.setSelectedType('project')}
+                    >
+                        Projects
+                    </button>
+
+                    <button
+                        className={projects.selectedType === 'research' ? 'active-tab' : ''}
+                        onClick={() => projects.setSelectedType('research')}
+                    >
+                        Research Papers
+                    </button>
+                </div>
+
+                {projects.showForm && (
+                    <div className="modal-overlay">
+                        <div className="modal">
+                            <ProjectForm
+                                form={projects.form}
+                                editingId={projects.editingId}
+                                categories={projects.categories}
+                                onChange={projects.handleChange}
+                                onSubmit={projects.handleSubmit}
+                                onCancel={projects.resetForm}
+                            />
+                        </div>
+                    </div>
+                )}
+
+                <ProjectList
+                    projects={projects.filteredProjects}
+                    users={projects.users}
+                    onEdit={projects.handleEdit}
+                    onDelete={projects.handleDelete}
+                />
+            </div>
+
         </>
     )
 }
