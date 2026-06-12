@@ -529,3 +529,42 @@ button.danger {
 .selected-result {
     border: 2px solid #2563eb;
 }
+.request-card {
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.request-card.pending {
+    background: #fef3c7;
+}
+
+.request-card.accepted {
+    background: #dcfce7;
+}
+
+.request-card.rejected {
+    background: #fee2e2;
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.request-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.request-message {
+    font-style: italic;
+}
+.request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
