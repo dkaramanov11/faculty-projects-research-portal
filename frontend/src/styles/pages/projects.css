@@ -1,0 +1,93 @@
+.hero {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+
+    padding: 32px;
+    border-radius: 18px;
+
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    margin: 0 0 10px;
+    font-size: 36px;
+}
+
+.hero p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 16px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+
+    margin-top: 20px;
+}
+
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.project-card p {
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.badge,
+.status {
+    padding: 6px 10px;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    text-transform: uppercase;
+}
+
+.badge {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.completed {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.status.draft {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.participants-count {
+    font-weight: 600;
+    color: #4b5563;
+}

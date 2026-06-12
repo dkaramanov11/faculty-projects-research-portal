@@ -1,0 +1,74 @@
+.details-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.category-text {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.creator-text {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.success-text {
+    color: #166534;
+    font-weight: bold;
+}
+
+.participants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.participant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px;
+    border-radius: 10px;
+
+    background: #f3f4f6;
+}
+
+.participants-section {
+    margin-top: 16px;
+    padding-top: 14px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.participants-section h4 {
+    margin: 0 0 10px;
+}
+
+.participants-list li {
+    background: #f9fafb;
+
+    padding: 8px 10px;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.participant-form {
+    display: flex;
+    gap: 8px;
+}
+
+.participant-form select {
+    flex: 1;
+}
+
+.empty-text {
+    color: #6b7280;
+    font-size: 14px;
+}

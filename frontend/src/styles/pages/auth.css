@@ -1,0 +1,9 @@
+.auth-page {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card h1 {
+    margin-top: 0;
+    text-align: center;
+}

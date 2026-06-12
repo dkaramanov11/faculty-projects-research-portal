@@ -1,0 +1,16 @@
+@import '/src/styles/base/reset.css';
+@import '/src/styles/base/typography.css';
+@import '/src/styles/base/layout.css';
+
+@import '/src/styles/components/buttons.css';
+@import '/src/styles/components/forms.css';
+@import '/src/styles/components/modals.css';
+@import '/src/styles/components/cards.css';
+@import '/src/styles/components/navbar.css';
+@import '/src/styles/components/requests.css';
+
+@import '/src/styles/pages/auth.css';
+@import '/src/styles/pages/projects.css';
+@import '/src/styles/pages/project-details.css';
+@import '/src/styles/pages/users.css';
+@import '/src/styles/pages/categories.css';
