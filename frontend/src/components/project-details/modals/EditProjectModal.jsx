@@ -1,4 +1,4 @@
-import ProjectForm from '../../ProjectForm'
+import ProjectForm from '../../project/ProjectForm.jsx'
 
 function EditProjectModal({
                               isOpen,

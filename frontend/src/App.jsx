@@ -10,8 +10,8 @@ import UserDetailsPage from './pages/UserDetailsPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import MyProfilePage from './pages/MyProfilePage'
-import RequestsPage from './pages/RequestsPage'
 import InboxPage from './pages/InboxPage'
+import AdminRequestsPage from "./pages/AdminRequestsPage.jsx";
 
 function App() {
     return (
@@ -30,6 +30,7 @@ function App() {
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<MyProfilePage />} />
                     <Route path="/inbox" element={<InboxPage />} />
+                    <Route path="/admin/requests" element={<AdminRequestsPage />} />
                 </Routes>
             </div>
         </BrowserRouter>

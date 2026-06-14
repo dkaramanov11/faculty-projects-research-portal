@@ -1,5 +1,5 @@
-import ProjectForm from '../components/ProjectForm'
-import ProjectList from '../components/ProjectList'
+import ProjectForm from '../components/project/ProjectForm.jsx'
+import ProjectList from '../components/project/ProjectList.jsx'
 import { useProjects } from '../hooks/useProjects'
 
 function ProjectsPage() {
