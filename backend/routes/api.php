@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectCreationRequestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectRequestController;
@@ -89,4 +90,34 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/projects/{project}/invite/{user}', [ProjectRequestController::class, 'invite']);
 
     Route::get('/inbox', [ProjectRequestController::class, 'inbox']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware(['auth:sanctum', 'admin'])
+        ->group(function () {
+
+            Route::get(
+                '/admin/project-creation-requests',
+                [ProjectCreationRequestController::class, 'index']
+            );
+
+            Route::patch(
+                '/admin/project-creation-requests/{projectCreationRequest}/approve',
+                [ProjectCreationRequestController::class, 'approve']
+            );
+
+            Route::patch(
+                '/admin/project-creation-requests/{projectCreationRequest}/reject',
+                [ProjectCreationRequestController::class, 'reject']
+            );
+
+            Route::delete(
+                '/admin/project-creation-requests/{projectCreationRequest}',
+                [ProjectCreationRequestController::class, 'destroy']
+            );
+        });
 });

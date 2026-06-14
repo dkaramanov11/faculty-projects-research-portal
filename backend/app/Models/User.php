@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -58,4 +59,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class)
             ->withTimestamps();
     }
+
+    public function projectCreationRequests(): HasMany
+    {
+        return $this->hasMany(ProjectCreationRequest::class);
+    }
+
 }

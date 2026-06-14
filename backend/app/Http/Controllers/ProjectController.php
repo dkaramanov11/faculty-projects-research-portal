@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Projects\CreateProjectAction;
+use App\Enums\ProjectApprovalStatus;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProjectController extends Controller
@@ -17,7 +18,12 @@ class ProjectController extends Controller
      */
     public function index() : AnonymousResourceCollection
     {
-        return ProjectResource::collection(Project::all());
+        $projects = Project::query()
+            ->where('approval_status', ProjectApprovalStatus::APPROVED)
+            ->latest()
+            ->get();
+
+        return ProjectResource::collection($projects);
     }
 
     /**
@@ -31,14 +37,11 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProjectRequest $request) : ProjectResource
+    public function store(ProjectRequest $request, CreateProjectAction $createProjectAction): ProjectResource
     {
-        $data = $request->validated();
-
-        $data['created_by'] = auth()->id();
-
-       $project = Project::query()
-           ->create($data);
+        $project = $createProjectAction->execute(
+            $request->validated()
+        );
 
         return ProjectResource::make($project);
     }

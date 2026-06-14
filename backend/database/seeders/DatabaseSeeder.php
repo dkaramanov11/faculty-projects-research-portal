@@ -25,5 +25,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(10)->create();
         Category::factory()->count(5)->create();
         Project::factory()->count(10)->create();
+
+        $this->call(AdminUserSeeder::class);
     }
 }
