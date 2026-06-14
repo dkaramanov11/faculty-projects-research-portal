@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import MyProfilePage from './pages/MyProfilePage'
 import RequestsPage from './pages/RequestsPage'
+import InboxPage from './pages/InboxPage'
 
 function App() {
     return (
@@ -28,7 +29,7 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<MyProfilePage />} />
-                    <Route path="/requests" element={<RequestsPage />} />
+                    <Route path="/inbox" element={<InboxPage />} />
                 </Routes>
             </div>
         </BrowserRouter>

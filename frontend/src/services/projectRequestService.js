@@ -55,3 +55,12 @@ export function inviteUserToProject(projectId, userId, message, token) {
         }
     ).then(response => response.json())
 }
+
+export function getInbox(token) {
+    return fetch('http://127.0.0.1:8000/api/inbox', {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }).then(response => response.json())
+}

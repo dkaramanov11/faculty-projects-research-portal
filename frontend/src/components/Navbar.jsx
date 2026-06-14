@@ -48,12 +48,12 @@ function Navbar() {
 
                     {user && (
                         <NavLink
-                            to="/requests"
+                            to="/inbox"
                             className={({ isActive }) =>
                                 isActive ? 'active' : ''
                             }
                         >
-                            Requests
+                            Inbox
                         </NavLink>
                     )}
 
