@@ -87,4 +87,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/project-requests/{projectRequest}/reject', [ProjectRequestController::class, 'reject']);
 
     Route::post('/projects/{project}/invite/{user}', [ProjectRequestController::class, 'invite']);
+
+    Route::get('/inbox', [ProjectRequestController::class, 'inbox']);
 });

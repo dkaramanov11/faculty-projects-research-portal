@@ -21,13 +21,15 @@ class ProjectRequestResource extends JsonResource
             'status' => $this->status->value,
             'message' => $this->message,
 
+            'is_incoming' => $this->receiver_id === auth()->id(),
+            'is_outgoing' => $this->sender_id === auth()->id(),
+
             'project' => [
                 'id' => $this->project->id,
                 'title' => $this->project->title,
             ],
 
             'sender' => UserResource::make($this->sender),
-
             'receiver' => UserResource::make($this->receiver),
 
             'created_at' => $this->created_at,

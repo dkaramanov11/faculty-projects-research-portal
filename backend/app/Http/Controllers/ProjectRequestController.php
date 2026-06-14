@@ -194,4 +194,27 @@ class ProjectRequestController extends Controller
 
         return ProjectRequestResource::make($projectRequest);
     }
+
+    public function inbox(): AnonymousResourceCollection
+    {
+        $userId = auth()->id();
+
+        $requests = ProjectRequest::query()
+            ->where(function ($query) use ($userId) {
+                $query->where('receiver_id', $userId)
+                    ->where('status', ProjectRequestStatus::PENDING);
+            })
+            ->orWhere(function ($query) use ($userId) {
+                $query->where('sender_id', $userId)
+                    ->whereIn('status', [
+                        ProjectRequestStatus::ACCEPTED,
+                        ProjectRequestStatus::REJECTED,
+                    ]);
+            })
+            ->latest()
+            ->get();
+
+        return ProjectRequestResource::collection($requests);
+    }
+
 }
