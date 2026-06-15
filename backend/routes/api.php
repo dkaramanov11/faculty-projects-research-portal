@@ -105,6 +105,11 @@ Route::middleware('auth:sanctum')->group(function () {
                 [ProjectCreationRequestController::class, 'index']
             );
 
+            Route::get(
+                '/admin/pending-projects',
+                [ProjectController::class, 'pending']
+            );
+
             Route::patch(
                 '/admin/project-creation-requests/{projectCreationRequest}/approve',
                 [ProjectCreationRequestController::class, 'approve']
@@ -113,6 +118,16 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::patch(
                 '/admin/project-creation-requests/{projectCreationRequest}/reject',
                 [ProjectCreationRequestController::class, 'reject']
+            );
+
+            Route::patch(
+                '/admin/projects/{project}/approve',
+                [ProjectCreationRequestController::class, 'approveByProject']
+            );
+
+            Route::patch(
+                '/admin/projects/{project}/reject',
+                [ProjectCreationRequestController::class, 'rejectByProject']
             );
 
             Route::delete(

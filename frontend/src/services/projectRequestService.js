@@ -64,3 +64,31 @@ export function getInbox(token) {
         }
     }).then(response => response.json())
 }
+
+export function approvePendingProject(id, token) {
+    return fetch(
+        `http://127.0.0.1:8000/api/admin/project-creation-requests/${id}/approve`,
+        {
+            method: 'PATCH',
+
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+    ).then(response => response.json())
+}
+
+export function rejectPendingProject(id, token) {
+    return fetch(
+        `http://127.0.0.1:8000/api/admin/project-creation-requests/${id}/reject`,
+        {
+            method: 'PATCH',
+
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+    ).then(response => response.json())
+}

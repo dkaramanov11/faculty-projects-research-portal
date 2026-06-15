@@ -11,6 +11,9 @@ class ProjectCreationRequestResource extends JsonResource
     {
         return [
             'id' => $this->id,
+
+            'inbox_type' => 'project_creation',
+
             'status' => $this->status->value,
             'message' => $this->message,
             'admin_feedback' => $this->admin_feedback,

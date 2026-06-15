@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectApprovalStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,7 @@ class Project extends Model
         'description',
         'type',
         'status',
+        'approval_status',
         'category_id',
         'created_by',
     ];
@@ -26,6 +28,7 @@ class Project extends Model
     protected $casts = [
         'type' => ProjectType::class,
         'status' => ProjectStatus::class,
+        'approval_status' => ProjectApprovalStatus::class,
     ];
     public function category(): BelongsTo
     {

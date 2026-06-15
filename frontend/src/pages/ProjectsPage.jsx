@@ -25,13 +25,22 @@ function ProjectsPage() {
                     )}
                 </section>
                 <div className="project-tabs">
+
+                    {projects.isAdmin && (
+                        <button
+                            className={projects.selectedType === 'pending' ? 'active-tab' : ''}
+                            onClick={() => projects.setSelectedType('pending')}
+                        >
+                            Pending Projects
+                        </button>
+                    )}
+
                     <button
                         className={projects.selectedType === 'all' ? 'active-tab' : ''}
                         onClick={() => projects.setSelectedType('all')}
                     >
                         All
                     </button>
-
                     <button
                         className={projects.selectedType === 'project' ? 'active-tab' : ''}
                         onClick={() => projects.setSelectedType('project')}

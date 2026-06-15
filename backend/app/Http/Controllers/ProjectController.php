@@ -27,6 +27,19 @@ class ProjectController extends Controller
     }
 
     /**
+     * Display pending projects.
+     */
+    public function pending(): AnonymousResourceCollection
+    {
+        $projects = Project::query()
+            ->where('approval_status', ProjectApprovalStatus::PENDING)
+            ->latest()
+            ->get();
+
+        return ProjectResource::collection($projects);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

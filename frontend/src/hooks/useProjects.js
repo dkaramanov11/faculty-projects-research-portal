@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import {
     getProjects,
+    getPendingProjects,
     createProject,
     updateProject,
     deleteProject
@@ -21,6 +22,8 @@ export function useProjects() {
     const [editingId, setEditingId] = useState(null)
     const [showForm, setShowForm] = useState(false)
     const [selectedType, setSelectedType] = useState('all')
+    const isAdmin = user && user.role === 'admin'
+    const [pendingProjects, setPendingProjects] = useState([])
 
     const [form, setForm] = useState({
         title: '',
@@ -34,10 +37,20 @@ export function useProjects() {
         loadProjects()
         loadCategories()
         loadUsers()
-    }, [])
+
+        if (isAdmin) {
+            loadPendingProjects()
+        }
+
+    }, [isAdmin])
 
     function loadProjects() {
         getProjects().then(data => setProjects(data.data))
+    }
+
+    function loadPendingProjects() {
+        getPendingProjects(token)
+            .then(data => setPendingProjects(data.data))
     }
 
     function loadCategories() {
@@ -98,13 +111,15 @@ export function useProjects() {
         deleteProject(id, token).then(() => loadProjects())
     }
 
-    const filteredProjects = projects.filter(project => {
-        if (selectedType === 'all') {
-            return true
-        }
+    const filteredProjects = selectedType === 'pending'
+        ? pendingProjects
+        : projects.filter(project => {
+            if (selectedType === 'all') {
+                return true
+            }
 
-        return project.type === selectedType
-    })
+            return project.type === selectedType
+        })
 
     return {
         user,
@@ -120,6 +135,10 @@ export function useProjects() {
         setSelectedType,
 
         filteredProjects,
+
+        isAdmin,
+        pendingProjects,
+        loadPendingProjects,
 
         handleChange,
         handleSubmit,

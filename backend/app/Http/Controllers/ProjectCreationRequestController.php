@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ProjectApprovalStatus;
 use App\Http\Resources\ProjectCreationRequestResource;
+use App\Models\Project;
 use App\Models\ProjectCreationRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -48,6 +49,39 @@ class ProjectCreationRequestController extends Controller
 
         return ProjectCreationRequestResource::make($projectCreationRequest);
     }
+
+    public function approveByProject(Project $project): ProjectCreationRequestResource
+    {
+        $request = ProjectCreationRequest::query()
+            ->firstOrCreate(
+                [
+                    'project_id' => $project->id,
+                ],
+                [
+                    'user_id' => $project->created_by,
+                    'status' => ProjectApprovalStatus::PENDING,
+                ]
+            );
+
+        return $this->approve($request);
+    }
+
+    public function rejectByProject(Project $project): ProjectCreationRequestResource
+    {
+        $request = ProjectCreationRequest::query()
+            ->firstOrCreate(
+                [
+                    'project_id' => $project->id,
+                ],
+                [
+                    'user_id' => $project->created_by,
+                    'status' => ProjectApprovalStatus::PENDING,
+                ]
+            );
+
+        return $this->reject($request);
+    }
+
     public function destroy(ProjectCreationRequest $projectCreationRequest): JsonResponse
     {
         $projectCreationRequest->delete();
@@ -56,4 +90,5 @@ class ProjectCreationRequestController extends Controller
             'message' => 'Project creation request deleted successfully.'
         ]);
     }
+
 }

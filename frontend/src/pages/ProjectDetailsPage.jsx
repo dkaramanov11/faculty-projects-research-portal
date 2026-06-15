@@ -5,7 +5,7 @@ import SendRequestModal from '../components/project-details/modals/SendRequestMo
 import InviteProfessorModal from '../components/project-details/modals/InviteProfessorModal'
 import InviteStudentModal from '../components/project-details/modals/InviteStudentModal'
 import EditProjectModal from '../components/project-details/modals/EditProjectModal'
-
+import AdminProjectApprovalPanel from '../components/project-details/AdminProjectApprovalPanel'
 import { useProjectDetails } from '../hooks/useProjectDetails'
 
 function ProjectDetailsPage() {
@@ -30,6 +30,13 @@ function ProjectDetailsPage() {
                 onEdit={details.openEditForm}
                 onDelete={details.handleDelete}
             />
+
+            {details.isAdmin && details.project.approval_status === 'pending' && (
+                <AdminProjectApprovalPanel
+                    onApprove={details.handleApproveProject}
+                    onReject={details.handleRejectProject}
+                />
+            )}
 
             <ProjectParticipants
                 participants={details.project.participants || []}

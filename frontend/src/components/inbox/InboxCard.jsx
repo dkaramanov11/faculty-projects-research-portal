@@ -1,6 +1,16 @@
 function getInboxTitle(item) {
     const projectTitle = item.project.title
 
+    if (item.inbox_type === 'project_creation') {
+        if (item.status === 'approved') {
+            return `Your project "${item.project.title}" was approved`
+        }
+
+        if (item.status === 'rejected') {
+            return `Your project "${item.project.title}" was rejected`
+        }
+    }
+
     if (item.is_incoming) {
 
         if (item.type === 'invitation_request') {
@@ -35,6 +45,17 @@ function getInboxTitle(item) {
 }
 
 function getInboxDescription(item) {
+
+    if (item.inbox_type === 'project_creation') {
+        if (item.status === 'approved') {
+            return 'Your project was approved by the admin and is now visible in the projects list.'
+        }
+
+        if (item.status === 'rejected') {
+            return 'Your project was not approved by the admin.'
+        }
+    }
+
     if (item.is_incoming) {
         return 'This request needs your response.'
     }

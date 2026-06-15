@@ -16,6 +16,11 @@ import {
 
 import { useAuth } from '../context/AuthContext'
 
+import {
+    approveProjectByProjectId,
+    rejectProjectByProjectId
+} from '../services/projectCreationRequestService'
+
 export function useProjectDetails() {
     const { id } = useParams()
     const navigate = useNavigate()
@@ -134,6 +139,17 @@ export function useProjectDetails() {
         })
     }
 
+    const isAdmin = user && user.role === 'admin'
+    function handleApproveProject() {
+        approveProjectByProjectId(project.id, token)
+            .then(() => navigate('/projects'))
+    }
+
+    function handleRejectProject() {
+        rejectProjectByProjectId(project.id, token)
+            .then(() => navigate('/projects'))
+    }
+
     const isCreator =
         user &&
         project &&
@@ -220,7 +236,11 @@ export function useProjectDetails() {
         handleSendRequest,
         handleInviteProfessor,
         handleInviteStudent,
+        handleApproveProject,
+        handleRejectProject,
 
+
+        isAdmin,
         isCreator,
         isParticipant,
         canManageProject,

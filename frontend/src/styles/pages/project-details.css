@@ -191,3 +191,23 @@
     gap: 14px;
     margin-top: 24px;
 }
+.admin-approval-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.admin-approval-panel h2 {
+    margin: 0 0 6px;
+}
+
+.admin-approval-panel p {
+    margin: 0;
+    color: #64748b;
+}
+
+.admin-approval-actions {
+    display: flex;
+    gap: 14px;
+}

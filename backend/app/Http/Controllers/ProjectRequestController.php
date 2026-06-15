@@ -11,6 +11,9 @@ use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\User;
+use App\Enums\ProjectApprovalStatus;
+use App\Http\Resources\ProjectCreationRequestResource;
+use App\Models\ProjectCreationRequest;
 
 class ProjectRequestController extends Controller
 {
@@ -195,11 +198,11 @@ class ProjectRequestController extends Controller
         return ProjectRequestResource::make($projectRequest);
     }
 
-    public function inbox(): AnonymousResourceCollection
+    public function inbox(): JsonResponse
     {
         $userId = auth()->id();
 
-        $requests = ProjectRequest::query()
+        $projectRequests = ProjectRequest::query()
             ->where(function ($query) use ($userId) {
                 $query->where('receiver_id', $userId)
                     ->where('status', ProjectRequestStatus::PENDING);
@@ -212,9 +215,27 @@ class ProjectRequestController extends Controller
                     ]);
             })
             ->latest()
-            ->get();
+            ->get()
+            ->map(fn ($request) => ProjectRequestResource::make($request)->resolve());
 
-        return ProjectRequestResource::collection($requests);
+        $projectCreationRequests = ProjectCreationRequest::query()
+            ->where('user_id', $userId)
+            ->whereIn('status', [
+                ProjectApprovalStatus::APPROVED,
+                ProjectApprovalStatus::REJECTED,
+            ])
+            ->latest()
+            ->get()
+            ->map(fn ($request) => ProjectCreationRequestResource::make($request)->resolve());
+
+        $items = $projectRequests
+            ->merge($projectCreationRequests)
+            ->sortByDesc('created_at')
+            ->values();
+
+        return response()->json([
+            'data' => $items
+        ]);
     }
 
 }

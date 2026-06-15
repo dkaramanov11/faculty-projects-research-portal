@@ -57,7 +57,7 @@ function Navbar() {
                             Inbox
                         </NavLink>
                     )}
-                    
+
                     {isAdmin && (
                         <NavLink
                             to="/admin/requests"
