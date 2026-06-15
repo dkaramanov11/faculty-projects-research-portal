@@ -1,6 +1,10 @@
+import ProjectList from '../components/project/ProjectList'
+import ProfileCard from '../components/my-profile/ProfileCard'
+import ProfileTabs from '../components/my-profile/ProfileTabs'
+import RequestProfessorRoleModal from '../components/my-profile/modals/RequestProfessorRoleModal'
 import { useProfile } from '../hooks/useProfile'
-import RequestProfessorRoleModal from "../components/my-profile/modals/RequestProfessorRoleModal.jsx";
-
+import EditProfileModal from '../components/my-profile/modals/EditProfileModal'
+import ProjectForm from '../components/project/ProjectForm'
 
 function MyProfilePage() {
     const profile = useProfile()
@@ -9,35 +13,49 @@ function MyProfilePage() {
         return <p>You are not logged in.</p>
     }
 
+    const selectedProjects =
+        profile.activeTab === 'created'
+            ? profile.createdProjects
+            : profile.activeTab === 'participating'
+                ? profile.participatingProjects
+                : profile.pendingProjects
+
     return (
         <section className="details-page">
-            <div className="details-card">
-                <span className={`role-badge ${profile.user.role}`}>
-                    {profile.user.role}
-                </span>
+            <ProfileCard profile={profile} />
 
-                <h1>{profile.user.full_name}</h1>
+            <div className="profile-tabs-section">
 
-                <p><strong>Username:</strong> @{profile.user.username}</p>
-                <p><strong>Email:</strong> {profile.user.email}</p>
-                <p><strong>Name:</strong> {profile.user.name}</p>
-                <p><strong>Surname:</strong> {profile.user.surname}</p>
-
-                {profile.user.role === 'student' && !profile.requestSent && (
+                <div className="profile-add-project">
                     <button
                         type="button"
-                        onClick={() => profile.setShowProfessorModal(true)}
+                        className="add-button"
+                        onClick={() => profile.setShowProjectModal(true)}
                     >
-                        Request Professor Role
+                        + Add Project
                     </button>
-                )}
+                </div>
 
-                {profile.requestSent && (
-                    <p className="success-text">
-                        Professor role request sent successfully.
-                    </p>
-                )}
+                <div className="profile-tabs-wrapper">
+                    <ProfileTabs profile={profile} />
+                </div>
+
             </div>
+
+            <ProjectList
+                projects={selectedProjects}
+                users={[]}
+                onEdit={() => {}}
+                onDelete={() => {}}
+            />
+
+            <EditProfileModal
+                isOpen={profile.showEditModal}
+                onClose={() => profile.setShowEditModal(false)}
+                form={profile.editForm}
+                onChange={profile.handleEditChange}
+                onSubmit={profile.handleProfileUpdate}
+            />
 
             <RequestProfessorRoleModal
                 isOpen={profile.showProfessorModal}
@@ -46,6 +64,22 @@ function MyProfilePage() {
                 setMessage={profile.setProfessorMessage}
                 onSubmit={profile.handleProfessorRoleRequest}
             />
+
+            {profile.showProjectModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <ProjectForm
+                            form={profile.projectForm}
+                            editingId={null}
+                            categories={profile.categories}
+                            onChange={profile.handleProjectChange}
+                            onSubmit={profile.handleCreateProject}
+                            onCancel={profile.resetProjectForm}
+                        />
+                    </div>
+                </div>
+            )}
+
         </section>
     )
 }

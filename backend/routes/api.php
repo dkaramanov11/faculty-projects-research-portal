@@ -54,6 +54,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update']);
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
 
+    Route::get(
+        '/profile/projects',
+        [UserController::class, 'profileProjects']
+    );
+    Route::put('/profile', [UserController::class, 'updateProfile']);
+
     /*
     |--------------------------------------------------------------------------
     | Categories
