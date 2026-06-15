@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProfessorRoleRequestResource;
+use App\Models\ProfessorRoleRequest;
 use App\Models\ProjectRequest;
 use Illuminate\Http\Request;
 use App\Enums\ProjectRequestStatus;
@@ -11,7 +13,7 @@ use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\User;
-use App\Enums\ProjectApprovalStatus;
+use App\Enums\ApprovalStatus;
 use App\Http\Resources\ProjectCreationRequestResource;
 use App\Models\ProjectCreationRequest;
 
@@ -221,15 +223,27 @@ class ProjectRequestController extends Controller
         $projectCreationRequests = ProjectCreationRequest::query()
             ->where('user_id', $userId)
             ->whereIn('status', [
-                ProjectApprovalStatus::APPROVED,
-                ProjectApprovalStatus::REJECTED,
+                ApprovalStatus::APPROVED,
+                ApprovalStatus::REJECTED,
             ])
             ->latest()
             ->get()
             ->map(fn ($request) => ProjectCreationRequestResource::make($request)->resolve());
 
+        $professorRoleRequests = ProfessorRoleRequest::query()
+            ->where('user_id', $userId)
+            ->whereIn('status', [
+                ApprovalStatus::APPROVED,
+                ApprovalStatus::REJECTED,
+            ])
+            ->whereNotNull('reviewed_at')
+            ->latest()
+            ->get()
+            ->map(fn ($request) => ProfessorRoleRequestResource::make($request)->resolve());
+
         $items = $projectRequests
             ->merge($projectCreationRequests)
+            ->merge($professorRoleRequests)
             ->sortByDesc('created_at')
             ->values();
 

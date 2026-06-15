@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProfessorRoleRequestController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectCreationRequestController;
 use App\Http\Controllers\UserController;
@@ -91,6 +92,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/inbox', [ProjectRequestController::class, 'inbox']);
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project requests
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/professor-role-requests',
+        [ProfessorRoleRequestController::class, 'store']
+    );
+
     /*
     |--------------------------------------------------------------------------
     | Admin
@@ -134,5 +147,26 @@ Route::middleware('auth:sanctum')->group(function () {
                 '/admin/project-creation-requests/{projectCreationRequest}',
                 [ProjectCreationRequestController::class, 'destroy']
             );
+
+            Route::get(
+                '/admin/professor-role-requests',
+                [ProfessorRoleRequestController::class, 'index']
+            );
+
+            Route::patch(
+                '/admin/professor-role-requests/{professorRoleRequest}/approve',
+                [ProfessorRoleRequestController::class, 'approve']
+            );
+
+            Route::patch(
+                '/admin/professor-role-requests/{professorRoleRequest}/reject',
+                [ProfessorRoleRequestController::class, 'reject']
+            );
+
+            Route::delete(
+                '/admin/professor-role-requests/{professorRoleRequest}',
+                [ProfessorRoleRequestController::class, 'destroy']
+            );
+
         });
 });

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ProjectApprovalStatus: string
+enum ApprovalStatus: string
 {
     case PENDING = 'pending';
 

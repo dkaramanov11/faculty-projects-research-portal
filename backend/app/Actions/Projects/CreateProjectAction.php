@@ -2,7 +2,7 @@
 
 namespace App\Actions\Projects;
 
-use App\Enums\ProjectApprovalStatus;
+use App\Enums\ApprovalStatus;
 use App\Enums\UserRole;
 use App\Models\Project;
 use App\Models\ProjectCreationRequest;
@@ -19,8 +19,8 @@ class CreateProjectAction
             $user->role === UserRole::PROFESSOR;
 
         $data['approval_status'] = $shouldApproveImmediately
-            ? ProjectApprovalStatus::APPROVED
-            : ProjectApprovalStatus::PENDING;
+            ? ApprovalStatus::APPROVED
+            : ApprovalStatus::PENDING;
 
         $project = Project::query()->create($data);
 
@@ -28,7 +28,7 @@ class CreateProjectAction
             ProjectCreationRequest::query()->create([
                 'project_id' => $project->id,
                 'user_id' => $user->id,
-                'status' => ProjectApprovalStatus::PENDING,
+                'status' => ApprovalStatus::PENDING,
                 'message' => null,
             ]);
         }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ProjectApprovalStatus;
+use App\Enums\ApprovalStatus;
 use App\Http\Resources\ProjectCreationRequestResource;
 use App\Models\Project;
 use App\Models\ProjectCreationRequest;
@@ -23,13 +23,13 @@ class ProjectCreationRequestController extends Controller
     public function approve(ProjectCreationRequest $projectCreationRequest): ProjectCreationRequestResource
     {
         $projectCreationRequest->update([
-            'status' => ProjectApprovalStatus::APPROVED,
+            'status' => ApprovalStatus::APPROVED,
             'reviewed_by' => auth()->id(),
             'reviewed_at' => now(),
         ]);
 
         $projectCreationRequest->project->update([
-            'approval_status' => ProjectApprovalStatus::APPROVED,
+            'approval_status' => ApprovalStatus::APPROVED,
         ]);
 
         return ProjectCreationRequestResource::make($projectCreationRequest);
@@ -38,13 +38,13 @@ class ProjectCreationRequestController extends Controller
     public function reject(ProjectCreationRequest $projectCreationRequest): ProjectCreationRequestResource
     {
         $projectCreationRequest->update([
-            'status' => ProjectApprovalStatus::REJECTED,
+            'status' => ApprovalStatus::REJECTED,
             'reviewed_by' => auth()->id(),
             'reviewed_at' => now(),
         ]);
 
         $projectCreationRequest->project->update([
-            'approval_status' => ProjectApprovalStatus::REJECTED,
+            'approval_status' => ApprovalStatus::REJECTED,
         ]);
 
         return ProjectCreationRequestResource::make($projectCreationRequest);
@@ -59,7 +59,7 @@ class ProjectCreationRequestController extends Controller
                 ],
                 [
                     'user_id' => $project->created_by,
-                    'status' => ProjectApprovalStatus::PENDING,
+                    'status' => ApprovalStatus::PENDING,
                 ]
             );
 
@@ -75,7 +75,7 @@ class ProjectCreationRequestController extends Controller
                 ],
                 [
                     'user_id' => $project->created_by,
-                    'status' => ProjectApprovalStatus::PENDING,
+                    'status' => ApprovalStatus::PENDING,
                 ]
             );
 

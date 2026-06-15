@@ -1,4 +1,17 @@
 function getInboxTitle(item) {
+
+
+    if (item.inbox_type === 'professor_role') {
+
+        if (item.status === 'approved') {
+            return 'Your professor role request was approved'
+        }
+
+        if (item.status === 'rejected') {
+            return 'Your professor role request was rejected'
+        }
+    }
+
     const projectTitle = item.project.title
 
     if (item.inbox_type === 'project_creation') {
@@ -53,6 +66,17 @@ function getInboxDescription(item) {
 
         if (item.status === 'rejected') {
             return 'Your project was not approved by the admin.'
+        }
+    }
+
+    if (item.inbox_type === 'professor_role') {
+
+        if (item.status === 'approved') {
+            return 'Your request was approved by the admin.'
+        }
+
+        if (item.status === 'rejected') {
+            return 'Your request was not approved by the admin.'
         }
     }
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Projects\CreateProjectAction;
-use App\Enums\ProjectApprovalStatus;
+use App\Enums\ApprovalStatus;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
@@ -19,7 +19,7 @@ class ProjectController extends Controller
     public function index() : AnonymousResourceCollection
     {
         $projects = Project::query()
-            ->where('approval_status', ProjectApprovalStatus::APPROVED)
+            ->where('approval_status', ApprovalStatus::APPROVED)
             ->latest()
             ->get();
 
@@ -32,7 +32,7 @@ class ProjectController extends Controller
     public function pending(): AnonymousResourceCollection
     {
         $projects = Project::query()
-            ->where('approval_status', ProjectApprovalStatus::PENDING)
+            ->where('approval_status', ApprovalStatus::PENDING)
             ->latest()
             ->get();
 
