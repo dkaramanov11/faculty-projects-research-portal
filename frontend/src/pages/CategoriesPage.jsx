@@ -7,6 +7,7 @@ import {
     deleteCategory
 } from '../services/categoryService'
 import { useAuth } from '../context/AuthContext'
+import { Navigate } from 'react-router-dom'
 
 function CategoriesPage() {
     const [categories, setCategories] = useState([])
@@ -16,6 +17,13 @@ function CategoriesPage() {
         name: ''
     })
     const { user, token } = useAuth()
+
+    const canManageCategories =
+        user?.role === 'admin' || user?.role === 'professor'
+
+    if (!canManageCategories) {
+        return <Navigate to="/projects" />
+    }
 
     useEffect(() => {
         loadCategories()

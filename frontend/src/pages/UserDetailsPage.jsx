@@ -16,24 +16,51 @@ function UserDetailsPage() {
     }
 
     return (
-        <section className="details-page">
-            <button className="secondary" onClick={() => navigate('/users')}>
-                Back to Users
+        <div className="userDetails-page">
+            
+            <button
+                className="back-button"
+                onClick={() => navigate('/users')}
+            >
+                ←  Back to Users
             </button>
 
-            <div className="details-card">
+            <div className="profile-card details-card">
+
+                <div className="profile-avatar">
+                    {user.name.charAt(0)}
+                    {user.surname.charAt(0)}
+                </div>
+
                 <span className={`role-badge ${user.role}`}>
-                    {user.role}
-                </span>
+                {user.role}
+            </span>
 
-                <h1>{user.full_name}</h1>
+                <div className="profile-info">
+                    <div className="profile-info-row">
+                        <strong>Username:</strong>
+                        <span>@{user.username}</span>
+                    </div>
 
-                <p><strong>Username:</strong> @{user.username}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Name:</strong> {user.name}</p>
-                <p><strong>Surname:</strong> {user.surname}</p>
+                    <div className="profile-info-row">
+                        <strong>Email:</strong>
+                        <span>{user.email}</span>
+                    </div>
+
+                    <div className="profile-info-row">
+                        <strong>Name:</strong>
+                        <span>{user.name}</span>
+                    </div>
+
+                    <div className="profile-info-row">
+                        <strong>Surname:</strong>
+                        <span>{user.surname}</span>
+                    </div>
+
+                </div>
+
             </div>
-        </section>
+        </div>
     )
 }
 

@@ -4,12 +4,16 @@
     border-radius: 18px;
 
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+    max-width: 800px;
+    margin: auto;
 }
 
 .user-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-width: 800px;
 }
 
 .user-row {
@@ -33,7 +37,7 @@
     color: inherit;
 }
 
-.user-row-link:hover {
+.user-row:hover {
     background: #eef2ff;
 }
 
@@ -55,4 +59,27 @@
 .role-badge.professor {
     background: #dcfce7;
     color: #166534;
+}
+.user-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 20px;
+    margin-bottom: 12px;
+
+    background: white;
+    border-radius: 12px;
+}
+
+.user-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-row-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
 }

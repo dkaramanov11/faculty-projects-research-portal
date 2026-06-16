@@ -66,5 +66,20 @@ class UserController extends Controller
 
         return UserResource::make($user);
     }
+
+    public function destroy(User $user): JsonResponse
+    {
+        if ($user->id === auth()->id()) {
+            return response()->json([
+                'message' => 'You cannot delete your own account.'
+            ], 403);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'User deleted successfully.'
+        ]);
+    }
 }
 

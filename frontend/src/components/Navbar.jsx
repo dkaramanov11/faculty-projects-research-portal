@@ -3,7 +3,12 @@ import { useAuth } from '../context/AuthContext'
 
 function Navbar() {
     const { user, logoutUser } = useAuth()
-    const isAdmin = user && user.role === 'admin'
+
+    const isAdmin = user?.role === 'admin'
+    const isProfessor = user?.role === 'professor'
+
+    const canManageCategories =
+        isAdmin || isProfessor
 
     return (
         <div className="navbar-wrapper">
@@ -29,23 +34,27 @@ function Navbar() {
                         Projects
                     </NavLink>
 
-                    <NavLink
-                        to="/categories"
-                        className={({ isActive }) =>
-                            isActive ? 'active' : ''
-                        }
-                    >
-                        Categories
-                    </NavLink>
+                    {canManageCategories && (
+                        <NavLink
+                            to="/categories"
+                            className={({ isActive }) =>
+                                isActive ? 'active' : ''
+                            }
+                        >
+                            Categories
+                        </NavLink>
+                    )}
 
-                    <NavLink
-                        to="/users"
-                        className={({ isActive }) =>
-                            isActive ? 'active' : ''
-                        }
-                    >
-                        Users
-                    </NavLink>
+                    {isAdmin && (
+                        <NavLink
+                            to="/users"
+                            className={({ isActive }) =>
+                                isActive ? 'active' : ''
+                            }
+                        >
+                            Users
+                        </NavLink>
+                    )}
 
                     {user && !isAdmin && (
                         <NavLink
@@ -71,12 +80,14 @@ function Navbar() {
 
                     {user ? (
                         <>
-                            <NavLink
-                                to="/profile"
-                                className="nav-user"
-                            >
-                                {user.full_name}
-                            </NavLink>
+                            {!isAdmin && (
+                                <NavLink
+                                    to="/profile"
+                                    className="nav-user"
+                                >
+                                    {user.full_name}
+                                </NavLink>
+                            )}
 
                             <button
                                 className="logout-button"
