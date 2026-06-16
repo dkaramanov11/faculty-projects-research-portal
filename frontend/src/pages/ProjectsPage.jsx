@@ -7,41 +7,42 @@ import Pagination from '../components/shared/Pagination.jsx'
 
 function ProjectsPage() {
     const projects = useProjects()
-
     return (
-        <div className="container">
+        <>
             <ProjectsHeader projects={projects} />
+            <div className="container">
 
-            <ProjectsToolbar projects={projects} />
+                <ProjectsToolbar projects={projects} />
 
-            {projects.showForm && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <ProjectForm
-                            form={projects.form}
-                            editingId={projects.editingId}
-                            categories={projects.categories}
-                            onChange={projects.handleChange}
-                            onSubmit={projects.handleSubmit}
-                            onCancel={projects.resetForm}
-                        />
+                {projects.showForm && (
+                    <div className="modal-overlay">
+                        <div className="modal">
+                            <ProjectForm
+                                form={projects.form}
+                                editingId={projects.editingId}
+                                categories={projects.categories}
+                                onChange={projects.handleChange}
+                                onSubmit={projects.handleSubmit}
+                                onCancel={projects.resetForm}
+                            />
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            <ProjectList
-                projects={projects.paginatedProjects}
-                users={projects.users}
-                onEdit={projects.handleEdit}
-                onDelete={projects.handleDelete}
-            />
+                <ProjectList
+                    projects={projects.paginatedProjects}
+                    users={projects.users}
+                    onEdit={projects.handleEdit}
+                    onDelete={projects.handleDelete}
+                />
 
-            <Pagination
-                currentPage={projects.currentPage}
-                totalPages={projects.totalPages}
-                onPageChange={projects.setCurrentPage}
-            />
-        </div>
+                <Pagination
+                    currentPage={projects.currentPage}
+                    totalPages={projects.totalPages}
+                    onPageChange={projects.setCurrentPage}
+                />
+            </div>
+        </>
     )
 }
 

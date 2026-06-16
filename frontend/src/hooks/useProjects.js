@@ -27,7 +27,7 @@ export function useProjects() {
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 6
+    const itemsPerPage = 9
 
     const [form, setForm] = useState({
         title: '',
@@ -152,6 +152,7 @@ export function useProjects() {
         user,
         categories,
         users,
+        projects,
 
         form,
         editingId,
