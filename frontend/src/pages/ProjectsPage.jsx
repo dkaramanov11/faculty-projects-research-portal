@@ -3,6 +3,7 @@ import ProjectList from '../components/project/ProjectList.jsx'
 import ProjectsHeader from '../components/project/ProjectsHeader.jsx'
 import ProjectsToolbar from '../components/project/ProjectsToolbar.jsx'
 import { useProjects } from '../hooks/useProjects'
+import Pagination from '../components/shared/Pagination.jsx'
 
 function ProjectsPage() {
     const projects = useProjects()
@@ -29,10 +30,16 @@ function ProjectsPage() {
             )}
 
             <ProjectList
-                projects={projects.filteredProjects}
+                projects={projects.paginatedProjects}
                 users={projects.users}
                 onEdit={projects.handleEdit}
                 onDelete={projects.handleDelete}
+            />
+
+            <Pagination
+                currentPage={projects.currentPage}
+                totalPages={projects.totalPages}
+                onPageChange={projects.setCurrentPage}
             />
         </div>
     )

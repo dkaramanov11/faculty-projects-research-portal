@@ -245,3 +245,22 @@
     flex-shrink: 0;
     margin-right: 35px;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    margin-top: 32px;
+}
+
+.pagination span {
+    font-weight: 600;
+    color: #475569;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

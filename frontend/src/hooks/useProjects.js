@@ -26,6 +26,8 @@ export function useProjects() {
     const [pendingProjects, setPendingProjects] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('all')
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 6
 
     const [form, setForm] = useState({
         title: '',
@@ -135,6 +137,17 @@ export function useProjects() {
         return matchesType && matchesSearch && matchesCategory
     })
 
+    const totalPages = Math.ceil(filteredProjects.length / itemsPerPage)
+
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+
+    const paginatedProjects = filteredProjects.slice(startIndex, endIndex)
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [selectedType, searchTerm, selectedCategory])
+
     return {
         user,
         categories,
@@ -158,6 +171,12 @@ export function useProjects() {
         setSearchTerm,
         selectedCategory,
         setSelectedCategory,
+
+        currentPage,
+        setCurrentPage,
+        itemsPerPage,
+        totalPages,
+        paginatedProjects,
 
         handleChange,
         handleSubmit,
