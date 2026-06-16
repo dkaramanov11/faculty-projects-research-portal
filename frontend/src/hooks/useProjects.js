@@ -24,6 +24,8 @@ export function useProjects() {
     const [selectedType, setSelectedType] = useState('all')
     const isAdmin = user && user.role === 'admin'
     const [pendingProjects, setPendingProjects] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('all')
 
     const [form, setForm] = useState({
         title: '',
@@ -111,15 +113,27 @@ export function useProjects() {
         deleteProject(id, token).then(() => loadProjects())
     }
 
-    const filteredProjects = selectedType === 'pending'
-        ? pendingProjects
-        : projects.filter(project => {
-            if (selectedType === 'all') {
-                return true
-            }
+    const baseProjects =
+        selectedType === 'pending'
+            ? pendingProjects
+            : projects
 
-            return project.type === selectedType
-        })
+    const filteredProjects = baseProjects.filter(project => {
+        const matchesType =
+            selectedType === 'all' ||
+            selectedType === 'pending' ||
+            project.type === selectedType
+
+        const matchesSearch =
+            project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            project.description.toLowerCase().includes(searchTerm.toLowerCase())
+
+        const matchesCategory =
+            selectedCategory === 'all' ||
+            project.category?.id === Number(selectedCategory)
+
+        return matchesType && matchesSearch && matchesCategory
+    })
 
     return {
         user,
@@ -139,6 +153,11 @@ export function useProjects() {
         isAdmin,
         pendingProjects,
         loadPendingProjects,
+
+        searchTerm,
+        setSearchTerm,
+        selectedCategory,
+        setSelectedCategory,
 
         handleChange,
         handleSubmit,

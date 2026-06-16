@@ -173,7 +173,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 '/admin/professor-role-requests/{professorRoleRequest}',
                 [ProfessorRoleRequestController::class, 'destroy']
             );
-            
+
             Route::delete(
                 '/users/{user}',
                 [UserController::class, 'destroy']

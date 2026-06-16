@@ -204,3 +204,44 @@
         gap: 20px;
     }
 }
+
+.projects-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.project-tabs {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-right: 100px;
+}
+
+.projects-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 26px 0 26px;
+}
+
+.project-search {
+    width: 300px;
+    flex-shrink: 0;
+    margin-left: 35px;
+}
+
+.projects-toolbar .project-tabs {
+    flex: 1;
+    justify-content: center;
+    margin: 0;
+}
+
+.category-filter {
+    width: 200px;
+    flex-shrink: 0;
+    margin-right: 35px;
+}
