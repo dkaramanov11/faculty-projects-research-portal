@@ -1,25 +1,27 @@
+import { apiRequest } from '../utils/api'
+
 const API_URL = 'http://127.0.0.1:8000/api'
 
 export function register(data) {
-    return fetch(`${API_URL}/register`, {
+    return apiRequest(`${API_URL}/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(response => response.json())
+    })
 }
 
 export function login(data) {
-    return fetch(`${API_URL}/login`, {
+    return apiRequest(`${API_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(response => response.json())
+    })
 }
 
 export function getMe(token) {

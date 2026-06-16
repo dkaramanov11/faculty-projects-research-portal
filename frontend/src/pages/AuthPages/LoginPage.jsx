@@ -11,6 +11,9 @@ function LoginPage() {
         password: ''
     })
 
+    const [generalError, setGeneralError] = useState('')
+    const [errors, setErrors] = useState({})
+
     function handleChange(e) {
         setForm({
             ...form,
@@ -18,12 +21,31 @@ function LoginPage() {
         })
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
 
-        loginUser(form).then(() => {
-            navigate('/projects')
-        })
+        setGeneralError('')
+        setErrors({})
+
+        const response = await loginUser(form)
+
+        if (!response.ok) {
+            setErrors(response.errors || {})
+
+            if (
+                !response.errors ||
+                Object.keys(response.errors).length === 0
+            ) {
+                setGeneralError(
+                    response.message ||
+                    'Invalid username or password.'
+                )
+            }
+
+            return
+        }
+
+        navigate('/projects')
     }
 
     return (
@@ -31,14 +53,23 @@ function LoginPage() {
             <div className="auth-card">
                 <h1>Login</h1>
 
+                {generalError && (
+                    <div className="login-error">
+                        {generalError}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit}>
                     <input
                         name="username"
                         placeholder="Username"
                         value={form.username}
                         onChange={handleChange}
-                        required
                     />
+
+                    {errors.username && (
+                        <p className="field-error">{errors.username[0]}</p>
+                    )}
 
                     <input
                         name="password"
@@ -46,8 +77,11 @@ function LoginPage() {
                         placeholder="Password"
                         value={form.password}
                         onChange={handleChange}
-                        required
                     />
+
+                    {errors.password && (
+                        <p className="field-error">{errors.password[0]}</p>
+                    )}
 
                     <button type="submit">Login</button>
                 </form>

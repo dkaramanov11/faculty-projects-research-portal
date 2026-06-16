@@ -18,22 +18,32 @@ export function AuthProvider({ children }) {
         }
     }, [token])
 
-    function registerUser(formData) {
-        return register(formData).then(data => {
-            localStorage.setItem('token', data.token)
-            setToken(data.token)
-            setUser(data.user)
-            return data
-        })
+    async function registerUser(formData) {
+        const response = await register(formData)
+
+        if (!response.ok) {
+            return response
+        }
+
+        localStorage.setItem('token', response.data.token)
+        setToken(response.data.token)
+        setUser(response.data.user)
+
+        return response
     }
 
-    function loginUser(formData) {
-        return login(formData).then(data => {
-            localStorage.setItem('token', data.token)
-            setToken(data.token)
-            setUser(data.user)
-            return data
-        })
+    async function loginUser(formData) {
+        const response = await login(formData)
+
+        if (!response.ok) {
+            return response
+        }
+
+        localStorage.setItem('token', response.data.token)
+        setToken(response.data.token)
+        setUser(response.data.user)
+
+        return response
     }
 
     function logoutUser() {
