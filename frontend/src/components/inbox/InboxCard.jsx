@@ -1,83 +1,46 @@
-function getInboxTitle(item) {
+import { Link } from 'react-router-dom'
 
-
-    if (item.inbox_type === 'professor_role') {
-
-        if (item.status === 'approved') {
-            return 'Your professor role request was approved'
-        }
-
-        if (item.status === 'rejected') {
-            return 'Your professor role request was rejected'
-        }
+function ProjectLink({ project }) {
+    if (!project) {
+        return null
     }
 
-    const projectTitle = item.project.title
+    return (
+        <Link
+            to={`/projects/${project.id}`}
+            className="inbox-link-text"
+        >
+            {project.title}
+        </Link>
+    )
+}
 
-    if (item.inbox_type === 'project_creation') {
-        if (item.status === 'approved') {
-            return `Your project "${item.project.title}" was approved`
-        }
-
-        if (item.status === 'rejected') {
-            return `Your project "${item.project.title}" was rejected`
-        }
+function UserLink({ user }) {
+    if (!user) {
+        return null
     }
 
-    if (item.is_incoming) {
-
-        if (item.type === 'invitation_request') {
-            return `${item.sender.full_name} invited you to join ${projectTitle}`
-        }
-
-        return `${item.sender.full_name} wants to join ${projectTitle}`
-    }
-
-    if (item.type === 'invitation_request') {
-
-        if (item.status === 'accepted') {
-            return `${item.receiver.full_name} accepted your invitation for ${projectTitle}`
-        }
-
-        if (item.status === 'rejected') {
-            return `${item.receiver.full_name} rejected your invitation for ${projectTitle}`
-        }
-
-        return `Waiting for ${item.receiver.full_name} to respond to your invitation`
-    }
-
-    if (item.status === 'accepted') {
-        return `${item.receiver.full_name} accepted your request to join ${projectTitle}`
-    }
-
-    if (item.status === 'rejected') {
-        return `${item.receiver.full_name} rejected your request to join ${projectTitle}`
-    }
-
-    return `Waiting for ${item.receiver.full_name} to respond to your request`
+    return (
+        <Link
+            to={`/users/${user.id}`}
+            className="inbox-link-text"
+        >
+            {user.full_name}
+        </Link>
+    )
 }
 
 function getInboxDescription(item) {
-
     if (item.inbox_type === 'project_creation') {
-        if (item.status === 'approved') {
-            return 'Your project was approved by the admin and is now visible in the projects list.'
-        }
-
-        if (item.status === 'rejected') {
-            return 'Your project was not approved by the admin.'
-        }
+        return item.status === 'approved'
+            ? 'Your project was approved by the admin and is now visible in the projects list.'
+            : 'Your project was not approved by the admin.'
     }
 
     if (item.inbox_type === 'professor_role') {
-
-        if (item.status === 'approved') {
-            return 'Your request was approved by the admin.'
-        }
-
-        if (item.status === 'rejected') {
-            return 'Your request was not approved by the admin.'
-        }
+        return item.status === 'approved'
+            ? 'Your request was approved by the admin.'
+            : 'Your request was not approved by the admin.'
     }
 
     if (item.is_incoming) {
@@ -95,7 +58,7 @@ function getInboxDescription(item) {
     return 'Waiting for response.'
 }
 
-function InboxCard({ item, onAccept, onReject }) {
+function InboxCard({ item, onAccept, onReject, onDelete }) {
     const isIncomingPending =
         item.is_incoming && item.status === 'pending'
 
@@ -103,7 +66,32 @@ function InboxCard({ item, onAccept, onReject }) {
         <div className={`request-card ${item.status}`}>
             <div className="request-header">
                 <div>
-                    <h3>{getInboxTitle(item)}</h3>
+                    {item.inbox_type === 'professor_role' && (
+                        <h3>
+                            Your professor role request was {item.status}
+                        </h3>
+                    )}
+
+                    {item.inbox_type === 'project_creation' && (
+                        <h3>
+                            Your project <ProjectLink project={item.project} /> was {item.status}
+                        </h3>
+                    )}
+
+                    {!item.inbox_type && item.is_incoming && (
+                        <h3>
+                            <UserLink user={item.sender} /> wants to join{' '}
+                            <ProjectLink project={item.project} />
+                        </h3>
+                    )}
+
+                    {!item.inbox_type && !item.is_incoming && (
+                        <h3>
+                            <UserLink user={item.receiver} /> responded to your request for{' '}
+                            <ProjectLink project={item.project} />
+                        </h3>
+                    )}
+
                     <p>{getInboxDescription(item)}</p>
                 </div>
 
@@ -132,6 +120,16 @@ function InboxCard({ item, onAccept, onReject }) {
                     </button>
                 </div>
             )}
+
+            <div className="inbox-card-footer">
+                <button
+                    type="button"
+                    className="delete-notification-link"
+                    onClick={() => onDelete(item)}
+                >
+                    Delete
+                </button>
+            </div>
         </div>
     )
 }

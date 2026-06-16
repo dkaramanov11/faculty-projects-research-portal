@@ -19,6 +19,8 @@ class ProjectRequest extends Model
         'type',
         'status',
         'message',
+        'deleted_by_sender',
+        'deleted_by_receiver',
     ];
 
     protected $casts = [

@@ -6,6 +6,7 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(localStorage.getItem('token'))
+    const [unreadInboxCount, setUnreadInboxCount] = useState(0)
 
     useEffect(() => {
         if (token) {
@@ -47,6 +48,8 @@ export function AuthProvider({ children }) {
         <AuthContext.Provider value={{
             user,
             token,
+            unreadInboxCount,
+            setUnreadInboxCount,
             registerUser,
             loginUser,
             logoutUser

@@ -5,7 +5,7 @@ function InboxPage() {
     const inbox = useInbox()
 
     return (
-        <div className="container">
+        <div className="inbox-container">
 
             <section className="projects-header">
                 <div>
@@ -23,6 +23,7 @@ function InboxPage() {
                 items={inbox.items}
                 onAccept={inbox.handleAccept}
                 onReject={inbox.handleReject}
+                onDelete={inbox.handleDelete}
             />
 
         </div>

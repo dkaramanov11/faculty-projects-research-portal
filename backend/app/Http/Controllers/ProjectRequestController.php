@@ -207,14 +207,16 @@ class ProjectRequestController extends Controller
         $projectRequests = ProjectRequest::query()
             ->where(function ($query) use ($userId) {
                 $query->where('receiver_id', $userId)
-                    ->where('status', ProjectRequestStatus::PENDING);
+                    ->where('status', ProjectRequestStatus::PENDING)
+                    ->where('deleted_by_receiver', false);
             })
             ->orWhere(function ($query) use ($userId) {
                 $query->where('sender_id', $userId)
                     ->whereIn('status', [
                         ProjectRequestStatus::ACCEPTED,
                         ProjectRequestStatus::REJECTED,
-                    ]);
+                    ])
+                    ->where('deleted_by_sender', false);
             })
             ->latest()
             ->get()
@@ -226,6 +228,7 @@ class ProjectRequestController extends Controller
                 ApprovalStatus::APPROVED,
                 ApprovalStatus::REJECTED,
             ])
+            ->where('deleted_by_user', false)
             ->latest()
             ->get()
             ->map(fn ($request) => ProjectCreationRequestResource::make($request)->resolve());
@@ -236,6 +239,7 @@ class ProjectRequestController extends Controller
                 ApprovalStatus::APPROVED,
                 ApprovalStatus::REJECTED,
             ])
+            ->where('deleted_by_user', false)
             ->whereNotNull('reviewed_at')
             ->latest()
             ->get()
@@ -249,6 +253,71 @@ class ProjectRequestController extends Controller
 
         return response()->json([
             'data' => $items
+        ]);
+    }
+
+    public function unreadCount(): JsonResponse
+    {
+        $user = auth()->user();
+        $lastSeen = $user->last_inbox_seen_at;
+
+        $projectRequestsCount = ProjectRequest::query()
+            ->where(function ($query) use ($user) {
+                $query->where('receiver_id', $user->id)
+                    ->where('status', ProjectRequestStatus::PENDING);
+            })
+            ->orWhere(function ($query) use ($user) {
+                $query->where('sender_id', $user->id)
+                    ->whereIn('status', [
+                        ProjectRequestStatus::ACCEPTED,
+                        ProjectRequestStatus::REJECTED,
+                    ]);
+            })
+            ->when($lastSeen, fn ($query) =>
+            $query->where('updated_at', '>', $lastSeen)
+            )
+            ->count();
+
+        $projectCreationRequestsCount = ProjectCreationRequest::query()
+            ->where('user_id', $user->id)
+            ->whereIn('status', [
+                ApprovalStatus::APPROVED,
+                ApprovalStatus::REJECTED,
+            ])
+            ->whereNotNull('reviewed_at')
+            ->when($lastSeen, fn ($query) =>
+            $query->where('updated_at', '>', $lastSeen)
+            )
+            ->count();
+
+        $professorRoleRequestsCount = ProfessorRoleRequest::query()
+            ->where('user_id', $user->id)
+            ->whereIn('status', [
+                ApprovalStatus::APPROVED,
+                ApprovalStatus::REJECTED,
+            ])
+            ->whereNotNull('reviewed_at')
+            ->when($lastSeen, fn ($query) =>
+            $query->where('updated_at', '>', $lastSeen)
+            )
+            ->count();
+
+        return response()->json([
+            'count' =>
+                $projectRequestsCount +
+                $projectCreationRequestsCount +
+                $professorRoleRequestsCount
+        ]);
+    }
+
+    public function markInboxAsRead(): JsonResponse
+    {
+        auth()->user()->update([
+            'last_inbox_seen_at' => now()
+        ]);
+
+        return response()->json([
+            'message' => 'Inbox marked as read.'
         ]);
     }
 

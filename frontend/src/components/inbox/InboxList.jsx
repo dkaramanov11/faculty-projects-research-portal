@@ -3,7 +3,8 @@ import InboxCard from './InboxCard'
 function InboxList({
                        items,
                        onAccept,
-                       onReject
+                       onReject,
+                       onDelete
                    }) {
     if (items.length === 0) {
         return (
@@ -21,6 +22,7 @@ function InboxList({
                     item={item}
                     onAccept={onAccept}
                     onReject={onReject}
+                    onDelete={onDelete}
                 />
             ))}
         </div>

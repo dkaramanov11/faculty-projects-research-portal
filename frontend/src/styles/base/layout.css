@@ -8,8 +8,11 @@
 .container {
     max-width: 1380px;
     margin: 0 auto;
-    width: 100%;
 }
 .page {
     padding-top: 120px;
+}
+.inbox-container {
+    max-width: 800px;
+    margin: 0 auto;
 }

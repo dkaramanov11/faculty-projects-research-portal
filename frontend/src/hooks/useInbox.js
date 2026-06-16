@@ -5,13 +5,20 @@ import {
     getInbox,
     rejectProjectRequest
 } from '../services/projectRequestService'
+import { markInboxAsRead } from '../services/inboxService'
+import { deleteNotification } from '../services/inboxService'
 
 export function useInbox() {
-    const { token } = useAuth()
+    const { token, setUnreadInboxCount } = useAuth()
     const [items, setItems] = useState([])
 
     useEffect(() => {
         loadInbox()
+
+        markInboxAsRead(token)
+            .then(() => {
+                setUnreadInboxCount(0)
+            })
     }, [])
 
     function loadInbox() {
@@ -26,9 +33,32 @@ export function useInbox() {
         rejectProjectRequest(id, token).then(() => loadInbox())
     }
 
+    async function handleDelete(item) {
+        if (!window.confirm('Delete this notification?')) {
+            return
+        }
+
+        const type = item.inbox_type ?? 'project_request'
+
+        console.log('Deleting notification:', {
+            id: item.id,
+            type: type,
+            item: item
+        })
+
+        await deleteNotification(
+            item.id,
+            type,
+            token
+        )
+
+        loadInbox()
+    }
+
     return {
         items,
         handleAccept,
-        handleReject
+        handleReject,
+        handleDelete
     }
 }

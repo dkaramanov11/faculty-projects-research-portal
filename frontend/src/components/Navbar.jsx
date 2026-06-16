@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useInboxNotifications } from '../hooks/useInboxNotifications'
 
 function Navbar() {
     const { user, logoutUser } = useAuth()
 
     const isAdmin = user?.role === 'admin'
     const isProfessor = user?.role === 'professor'
+    const notifications = useInboxNotifications()
 
     const canManageCategories =
         isAdmin || isProfessor
@@ -60,10 +62,16 @@ function Navbar() {
                         <NavLink
                             to="/inbox"
                             className={({ isActive }) =>
-                                isActive ? 'active' : ''
+                                isActive ? 'active inbox-link' : 'inbox-link'
                             }
                         >
                             Inbox
+
+                            {notifications.unreadCount > 0 && (
+                                <span className="notification-badge">
+                                    {notifications.unreadCount}
+                                </span>
+                            )}
                         </NavLink>
                     )}
 

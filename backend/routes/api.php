@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ProfessorRoleRequestController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectCreationRequestController;
@@ -108,6 +109,27 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/professor-role-requests',
         [ProfessorRoleRequestController::class, 'store']
+    );
+
+    /*
+     |--------------------------------------------------------------------------
+     | Inbox notifications
+     |--------------------------------------------------------------------------
+     */
+
+    Route::get(
+        '/inbox/unread-count',
+        [ProjectRequestController::class, 'unreadCount']
+    );
+
+    Route::post(
+        '/inbox/mark-as-read',
+        [ProjectRequestController::class, 'markInboxAsRead']
+    );
+
+    Route::post(
+        '/inbox/delete-notification',
+        [InboxController::class, 'deleteNotification']
     );
 
     /*

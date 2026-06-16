@@ -39,3 +39,30 @@
 .request-message {
     font-style: italic;
 }
+
+.inbox-link-text {
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.inbox-link-text:hover {
+    text-decoration: underline;
+}
+
+.inbox-card-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-notification-link {
+    border: none;
+    background: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.delete-notification-link:hover {
+    text-decoration: underline;
+}

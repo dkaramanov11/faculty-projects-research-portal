@@ -14,6 +14,7 @@ class ProfessorRoleRequest extends Model
         'message',
         'admin_feedback',
         'reviewed_at',
+        'deleted_by_user',
     ];
 
     protected $casts = [

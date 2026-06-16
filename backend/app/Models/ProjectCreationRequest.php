@@ -16,6 +16,7 @@ class ProjectCreationRequest extends Model
         'admin_feedback',
         'reviewed_by',
         'reviewed_at',
+        'deleted_by_user',
     ];
 
     protected $casts = [
