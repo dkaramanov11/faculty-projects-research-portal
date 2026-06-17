@@ -122,3 +122,6 @@
     align-items: center;
     justify-content: center;
 }
+.logo-link{
+    text-decoration: none;
+}

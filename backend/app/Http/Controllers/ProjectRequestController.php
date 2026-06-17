@@ -223,6 +223,7 @@ class ProjectRequestController extends Controller
             ->map(fn ($request) => ProjectRequestResource::make($request)->resolve());
 
         $projectCreationRequests = ProjectCreationRequest::query()
+            ->with('project')
             ->where('user_id', $userId)
             ->whereIn('status', [
                 ApprovalStatus::APPROVED,

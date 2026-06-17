@@ -17,13 +17,6 @@ function UserDetailsPage() {
 
     return (
         <div className="userDetails-page">
-            
-            <button
-                className="back-button"
-                onClick={() => navigate('/users')}
-            >
-                ←  Back to Users
-            </button>
 
             <div className="profile-card details-card">
 

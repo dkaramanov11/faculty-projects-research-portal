@@ -1,11 +1,12 @@
 import InboxCard from './InboxCard'
 
 function InboxList({
-                       items,
+                       items = [],
                        onAccept,
                        onReject,
                        onDelete
                    }) {
+
     if (items.length === 0) {
         return (
             <div className="details-card">

@@ -30,6 +30,7 @@ function EditProfileModal({
                         placeholder="Username"
                         value={form.username}
                         onChange={onChange}
+                        required
                     />
 
                     <input
@@ -37,6 +38,7 @@ function EditProfileModal({
                         placeholder="Email"
                         value={form.email}
                         onChange={onChange}
+                        required
                     />
 
                     <input
@@ -44,6 +46,7 @@ function EditProfileModal({
                         placeholder="Name"
                         value={form.name}
                         onChange={onChange}
+                        required
                     />
 
                     <input
@@ -51,6 +54,7 @@ function EditProfileModal({
                         placeholder="Surname"
                         value={form.surname}
                         onChange={onChange}
+                        required
                     />
 
                     <div className="modal-actions">

@@ -7,7 +7,7 @@ import { useAdminProfessorRequests } from '../hooks/useAdminProfessorRequests'
 function AdminRequestsPage() {
     const projectRequests = useAdminProjectRequests()
     const professorRequests = useAdminProfessorRequests()
-
+    console.log(projectRequests)
     return (
         <div className="container">
             <section className="projects-header">
@@ -18,7 +18,7 @@ function AdminRequestsPage() {
                 </div>
             </section>
 
-            <section className="details-card">
+            <section className="details-card-admin">
                 <h2>Project Creation Requests</h2>
 
                 <div className="request-list">

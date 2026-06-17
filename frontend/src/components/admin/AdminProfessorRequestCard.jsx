@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 function AdminProfessorRequestCard({
                                        request,
                                        onApprove,
@@ -8,7 +9,14 @@ function AdminProfessorRequestCard({
         <div className={`request-card ${request.status}`}>
             <div className="request-header">
                 <div>
-                    <h3>{request.user.full_name}</h3>
+                    <h3>
+                        <Link
+                            to={`/users/${request.user.id}`}
+                            className="admin-link"
+                        >
+                            {request.user.full_name}
+                        </Link>
+                    </h3>
 
                     <p>
                         Username: @{request.user.username}

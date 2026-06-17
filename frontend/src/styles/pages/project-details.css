@@ -210,4 +210,8 @@
 .admin-approval-actions {
     display: flex;
     gap: 14px;
+    margin: auto;
+}
+.admin-approval-actions > button{
+    padding: 20px 60px;
 }

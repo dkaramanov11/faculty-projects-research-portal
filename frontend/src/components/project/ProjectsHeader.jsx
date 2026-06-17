@@ -1,16 +1,36 @@
 function ProjectsHeader({ projects }) {
     const firstName = projects.user?.name
+    const isAdmin = projects.user?.role === 'admin'
 
     return (
         <section className="home-projects-header">
 
             <div>
 
-                {projects.user ? (
+                {isAdmin ? (
                     <>
-                        <span className="hero-label">
-                            FACULTY PROJECTS PORTAL
-                        </span>
+        <span className="hero-label">
+            ADMIN DASHBOARD
+        </span>
+
+                        <h1>
+                            System Overview
+                        </h1>
+
+                        <h2>
+                            Manage projects, users and platform requests.
+                        </h2>
+
+                        <p>
+                            Review project activity, monitor users, and handle pending requests from one central place.
+                        </p>
+                    </>
+                ) : (
+                    <>
+                    <span className="hero-label">
+                        FACULTY PROJECTS PORTAL
+                    </span>
+
                         <h1>
                             Hello, {firstName} 👋
                         </h1>
@@ -18,21 +38,6 @@ function ProjectsHeader({ projects }) {
                         <h2>
                             Where Ideas Become Projects.
                         </h2>
-
-                        <p>
-                            Explore active projects, discover research opportunities,
-                            and collaborate with students and professors.
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        <span className="hero-label">
-                            FACULTY PROJECTS PORTAL
-                        </span>
-
-                        <h1>
-                            Where Ideas Become Projects.
-                        </h1>
 
                         <p>
                             Explore active projects, discover research opportunities,
@@ -55,7 +60,7 @@ function ProjectsHeader({ projects }) {
                     <span>Total Projects</span>
                 </div>
 
-                {projects.user && (
+                {projects.user && !isAdmin && (
                     <button
                         className="hero-create-button"
                         onClick={() => projects.setShowForm(true)}

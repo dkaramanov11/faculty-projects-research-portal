@@ -22,7 +22,8 @@ export function useInbox() {
     }, [])
 
     function loadInbox() {
-        getInbox(token).then(data => setItems(data.data))
+        getInbox(token)
+            .then(data => setItems(data.data || []))
     }
 
     function handleAccept(id) {

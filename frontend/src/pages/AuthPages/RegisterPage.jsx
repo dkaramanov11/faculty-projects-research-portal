@@ -135,16 +135,6 @@ function RegisterPage() {
                         </p>
                     )}
 
-                    <select
-                        name="role"
-                        value={form.role}
-                        onChange={handleChange}
-                        className={errors.role ? 'input-error' : ''}
-                    >
-                        <option value="student">Student</option>
-                        <option value="professor">Professor</option>
-                    </select>
-
                     {errors.role && (
                         <p className="field-error">
                             {errors.role[0]}

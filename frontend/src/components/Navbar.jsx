@@ -17,13 +17,18 @@ function Navbar() {
 
             <nav className="navbar">
 
-                <div className="navbar-left">
-                    <div className="navbar-logo">
-                        🎓
-                    </div>
+                <NavLink
+                    to="/projects"
+                    className='logo-link'
+                >
+                    <div className="navbar-left">
+                        <div className="navbar-logo">
+                            🎓
+                        </div>
 
-                    <h2>Faculty Projects Portal</h2>
-                </div>
+                        <h2>Faculty Projects Portal</h2>
+                    </div>
+                </NavLink>
 
                 <div className="nav-links">
 
@@ -33,7 +38,7 @@ function Navbar() {
                             isActive ? 'active' : ''
                         }
                     >
-                        Projects
+                        Home
                     </NavLink>
 
                     {canManageCategories && (

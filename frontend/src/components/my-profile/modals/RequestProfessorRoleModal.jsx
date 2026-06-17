@@ -32,6 +32,7 @@ function RequestProfessorRoleModal({
                     placeholder="Write your message..."
                     value={message}
                     onChange={e => setMessage(e.target.value)}
+                    required
                 />
 
                 <div className="modal-actions">

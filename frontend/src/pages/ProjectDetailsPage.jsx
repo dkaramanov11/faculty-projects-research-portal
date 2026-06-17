@@ -17,12 +17,6 @@ function ProjectDetailsPage() {
 
     return (
         <section className="details-page">
-            <button
-                className="back-button"
-                onClick={() => details.navigate('/projects')}
-            >
-                        ←  Back to Projects
-            </button>
 
             <ProjectInfoCard
                 project={details.project}
@@ -38,14 +32,16 @@ function ProjectDetailsPage() {
                 />
             )}
 
-            <ProjectParticipants
-                participants={details.project.participants || []}
-                canManageProject={details.canManageProject}
-                onAddProfessor={() => details.setShowProfessorModal(true)}
-                onAddStudent={() => details.setShowStudentModal(true)}
-            />
+            {details.project.approval_status !== 'pending' && (
+                <ProjectParticipants
+                    participants={details.project.participants || []}
+                    canManageProject={details.canManageProject}
+                    onAddProfessor={() => details.setShowProfessorModal(true)}
+                    onAddStudent={() => details.setShowStudentModal(true)}
+                />
+            )}
 
-            {details.canSendRequest && (
+            {details.canSendRequest && details.project.approval_status !== 'pending' && (
                 <div className="details-card participation-request-card">
                     <div>
                         <h2>Want to participate?</h2>

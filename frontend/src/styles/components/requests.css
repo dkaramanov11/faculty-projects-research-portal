@@ -66,3 +66,12 @@
 .delete-notification-link:hover {
     text-decoration: underline;
 }
+.admin-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.admin-link:hover {
+    text-decoration: underline;
+}

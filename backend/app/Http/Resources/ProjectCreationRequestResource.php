@@ -11,18 +11,19 @@ class ProjectCreationRequestResource extends JsonResource
     {
         return [
             'id' => $this->id,
-
             'inbox_type' => 'project_creation',
-
             'status' => $this->status->value,
             'message' => $this->message,
-            'admin_feedback' => $this->admin_feedback,
 
-            'project' => ProjectResource::make($this->project),
+            'project' => $this->project ? [
+                'id' => $this->project->id,
+                'title' => $this->project->title,
+            ] : null,
             'user' => UserResource::make($this->user),
 
-            'reviewed_at' => $this->reviewed_at,
             'created_at' => $this->created_at,
+            'reviewed_at' => $this->reviewed_at,
         ];
+
     }
 }

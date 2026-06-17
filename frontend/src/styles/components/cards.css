@@ -32,6 +32,13 @@
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
+.details-card-admin {
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    margin: 10px;
+}
 
 .category-card {
     background: #eef2ff;
